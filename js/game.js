@@ -565,6 +565,13 @@ function spawnFlames() {
         life: 1, decay: rnd(0.008, 0.02), r: rnd(1.2, 2.8), tw: rnd(0, 7)
       });
   });
+  // embers drifting up behind the spin button
+  if (Math.random() < 0.4)
+    sparks.push({
+      x: 360 + rnd(-85, 85), y: 1258,
+      vx: rnd(-0.4, 0.4), vy: rnd(-3.2, -1.4),
+      life: 1, decay: rnd(0.012, 0.024), r: rnd(1, 2.4), tw: rnd(0, 7)
+    });
 }
 
 function burstCoins(n) {
