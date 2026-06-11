@@ -435,6 +435,13 @@ function drawMults(now) {
 /* ----- background ----- */
 const staticBg = document.createElement('canvas');
 staticBg.width = 720; staticBg.height = 1280;
+
+/* guardian statues (provided artwork) flank the controls */
+const statues = { left: new Image(), right: new Image(), ready: 0 };
+['left', 'right'].forEach(k => {
+  statues[k].onload = () => { statues.ready++; if (statues.ready === 2) paintStaticBg(); };
+  statues[k].src = `assets/statue-${k}.png`;
+});
 function paintStaticBg() {
   const x = staticBg.getContext('2d');
   // temple interior
@@ -476,8 +483,9 @@ function paintStaticBg() {
     else { x.beginPath(); x.moveTo(gx, gy); x.lineTo(gx + 14, gy + 4); x.lineTo(gx + 4, gy + 16); x.closePath(); x.stroke(); }
   }
 
-  // jackal statue silhouettes flanking the bottom
-  [[susStatue, 80, 1], [susStatue, 640, -1]].forEach(([fn, px, dir]) => fn(x, px, 1062, dir));
+  // procedural silhouettes only until the statue artwork is loaded
+  if (statues.ready < 2)
+    [[susStatue, 80, 1], [susStatue, 640, -1]].forEach(([fn, px, dir]) => fn(x, px, 1062, dir));
   function susStatue(x, cx, by, dir) {
     x.save();
     x.translate(cx, by);
@@ -543,14 +551,14 @@ for (let i = 0; i < 26; i++)
 
 function spawnFlames() {
   BOWLS.forEach(([px, py]) => {
-    for (let i = 0; i < 3; i++)
+    for (let i = 0; i < 4; i++)
       flames.push({
         x: px + rnd(-24, 24), y: py + rnd(-2, 6),
-        vx: rnd(-0.25, 0.25), vy: rnd(-3.6, -1.7),
-        life: 1, decay: rnd(0.028, 0.05),
-        r: rnd(9, 21), wob: rnd(0, 7), ws: rnd(2, 4)
+        vx: rnd(-0.25, 0.25), vy: rnd(-3.9, -1.8),
+        life: 1, decay: rnd(0.026, 0.048),
+        r: rnd(10, 23), wob: rnd(0, 7), ws: rnd(2, 4)
       });
-    if (Math.random() < 0.55)
+    if (Math.random() < 0.85)
       sparks.push({
         x: px + rnd(-22, 22), y: py - rnd(0, 14),
         vx: rnd(-0.7, 0.7), vy: rnd(-6, -2.6),
@@ -579,6 +587,37 @@ function drawBg(now, dt) {
   bx.fillStyle = fg;
   bx.fillRect(0, 0, 720, 820);
   bx.globalAlpha = 1;
+
+  // guardian statues with breathing golden aura and firelight flicker
+  if (statues.ready === 2) {
+    const H = 312, W = Math.round(260 * H / 460);
+    [[statues.left, 88], [statues.right, 632]].forEach(([img, cx], i) => {
+      const pulse = 0.6 + 0.25 * Math.sin(now / 480 + i * 2.4) + 0.15 * Math.sin(now / 90 + i);
+      bx.save();
+      bx.globalCompositeOperation = 'lighter';
+      let g = bx.createRadialGradient(cx, 1060, 10, cx, 1060, 170);
+      g.addColorStop(0, `rgba(255,190,80,${0.16 * pulse})`);
+      g.addColorStop(0.55, `rgba(255,140,40,${0.08 * pulse})`);
+      g.addColorStop(1, 'rgba(120,40,0,0)');
+      bx.fillStyle = g;
+      bx.beginPath(); bx.arc(cx, 1060, 170, 0, Math.PI * 2); bx.fill();
+      bx.restore();
+
+      bx.save();
+      bx.shadowColor = 'rgba(0,0,0,.85)';
+      bx.shadowBlur = 22;
+      bx.shadowOffsetY = 10;
+      bx.drawImage(img, cx - W / 2, 1206 - H, W, H);
+      bx.restore();
+
+      // firelight licking the gold trim
+      bx.save();
+      bx.globalCompositeOperation = 'lighter';
+      bx.globalAlpha = 0.05 + 0.05 * Math.sin(now / 130 + i * 3.1);
+      bx.drawImage(img, cx - W / 2, 1206 - H, W, H);
+      bx.restore();
+    });
+  }
 
   // dust
   bx.fillStyle = 'rgba(230,210,160,.5)';
@@ -952,13 +991,13 @@ el.turbo.addEventListener('click', () => {
 
 el.plus.addEventListener('click', () => {
   if (state.busy) return;
-  SND.init(); SND.click();
+  SND.init(); SND.blip(1);
   state.betIdx = Math.min(BETS.length - 1, state.betIdx + 1);
   setBet();
 });
 el.minus.addEventListener('click', () => {
   if (state.busy) return;
-  SND.init(); SND.click();
+  SND.init(); SND.blip(0);
   state.betIdx = Math.max(0, state.betIdx - 1);
   setBet();
 });
@@ -967,6 +1006,7 @@ el.auto.addEventListener('click', () => {
   SND.init(); SND.click();
   if (state.auto > 0) { state.auto = 0; updateAutoUi(); return; }
   if (state.busy) return;
+  SND.open();
   el.autoDlg.classList.remove('hidden');
 });
 el.autoDlg.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
@@ -976,15 +1016,15 @@ el.autoDlg.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () 
   updateAutoUi();
   playRound();
 }));
-el.autoCancel.addEventListener('click', () => { SND.click(); el.autoDlg.classList.add('hidden'); });
+el.autoCancel.addEventListener('click', () => { SND.close(); el.autoDlg.classList.add('hidden'); });
 
 el.fb.addEventListener('click', () => {
   if (state.busy) return;
-  SND.init(); SND.click();
+  SND.init(); SND.open();
   el.buyCost.textContent = fmt(bet() * FEATURE_BUY_X);
   el.buyDlg.classList.remove('hidden');
 });
-el.buyNo.addEventListener('click', () => { SND.click(); el.buyDlg.classList.add('hidden'); });
+el.buyNo.addEventListener('click', () => { SND.close(); el.buyDlg.classList.add('hidden'); });
 el.buyOk.addEventListener('click', async () => {
   el.buyDlg.classList.add('hidden');
   if (state.busy) return;
@@ -1009,7 +1049,7 @@ el.buyOk.addEventListener('click', async () => {
 el.sound.addEventListener('click', () => {
   SND.init();
   SND.setMuted(!SND.isMuted());
-  el.sound.innerHTML = SND.isMuted() ? '&#128263;' : '&#128266;';
+  el.sound.classList.toggle('muted', SND.isMuted());
   if (!SND.isMuted()) SND.click();
 });
 
@@ -1048,11 +1088,11 @@ function buildPaytable() {
   el.paytableBody.appendChild(note);
 }
 el.info.addEventListener('click', () => {
-  SND.init(); SND.click();
+  SND.init(); SND.open();
   buildPaytable();
   el.paytable.classList.remove('hidden');
 });
-el.paytableClose.addEventListener('click', () => { SND.click(); el.paytable.classList.add('hidden'); });
+el.paytableClose.addEventListener('click', () => { SND.close(); el.paytable.classList.add('hidden'); });
 
 /* ticker */
 let tickerIdx = 0;
