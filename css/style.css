@@ -248,40 +248,60 @@ html, body {
 .gold-btn.opt { margin-top: 10px; min-width: 105px; padding: 14px 0; }
 
 /* ---------- loader ---------- */
-#loader { background: radial-gradient(120% 90% at 50% 30%, #2a1535 0%, #120822 45%, #05030c 100%); z-index: 100; }
-#loader-art {
-  position: absolute; inset: 0; pointer-events: none;
+#loader { background: #05030c; z-index: 100; justify-content: flex-start; }
+#loader::before {
+  content: ''; position: absolute; inset: 0;
+  background: url(../assets/anubis-portrait.jpg) top center / 100% auto no-repeat;
+  animation: portrait 7s ease-in-out infinite;
+}
+@keyframes portrait { 0%,100% { filter: brightness(.92) saturate(1); } 50% { filter: brightness(1.08) saturate(1.12); } }
+#loader::after {
+  /* blend the artwork seamlessly into the page */
+  content: ''; position: absolute; inset: 0;
   background:
-    radial-gradient(60% 34% at 50% 30%, rgba(255,120,30,.22), transparent 70%),
-    radial-gradient(24% 9% at 38% 31%, rgba(255,190,60,.65), transparent 70%),
-    radial-gradient(24% 9% at 62% 31%, rgba(255,190,60,.65), transparent 70%),
-    radial-gradient(80% 50% at 50% 110%, rgba(120,40,160,.30), transparent 70%);
+    radial-gradient(140% 90% at 50% 40%, transparent 55%, rgba(5,3,12,.85) 100%),
+    linear-gradient(180deg, rgba(5,3,12,.55) 0%, transparent 12%, transparent 52%, rgba(5,3,12,.88) 74%, #05030c 88%);
+}
+#loader-art {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background:
+    radial-gradient(38% 16% at 50% 24%, rgba(255,120,30,.16), transparent 70%),
+    radial-gradient(90% 40% at 50% 100%, rgba(255,120,30,.12), transparent 70%);
   animation: eyes 2.6s ease-in-out infinite;
 }
-@keyframes eyes { 0%,100% { opacity: .75; } 50% { opacity: 1; } }
-#loader-content { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; }
+@keyframes eyes { 0%,100% { opacity: .6; } 50% { opacity: 1; } }
+#loader-content {
+  position: relative; z-index: 2; text-align: center;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 54px 0 64px;
+}
 #loader-title {
   font-family: 'Cinzel Decorative', 'Cinzel', serif; font-weight: 900;
-  font-size: 104px; line-height: .95; letter-spacing: 4px;
+  font-size: 88px; line-height: .95; letter-spacing: 4px;
   background: linear-gradient(180deg, #fff3c4 0%, #ffd86b 28%, #b97f16 52%, #ffe9a0 72%, #6b4408 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter: drop-shadow(0 6px 8px rgba(0,0,0,.95)) drop-shadow(0 0 30px rgba(255,170,40,.35));
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,.95)) drop-shadow(0 0 34px rgba(255,170,40,.45));
 }
-#loader-title span { font-size: 118px; }
+#loader-title span { font-size: 100px; }
 #loader-divider {
-  width: 380px; height: 8px; margin: 22px 0 30px; border-radius: 4px;
+  width: 360px; height: 7px; margin: 16px 0 0; border-radius: 4px;
   background: linear-gradient(90deg, transparent, #b3121a 18%, #c9a24a 50%, #2255cc 82%, transparent);
   box-shadow: 0 0 14px rgba(255,180,60,.6);
 }
-#loader-feat { color: #e8d8a8; font-size: 25px; letter-spacing: 3px; line-height: 1.7; font-weight: 700; }
+#loader-feat {
+  margin-top: auto;
+  color: #e8d8a8; font-size: 23px; letter-spacing: 3px; line-height: 1.65; font-weight: 700;
+  text-shadow: 0 2px 6px #000, 0 0 18px rgba(0,0,0,.9);
+}
 #loader-feat b { color: #f5e6b8; }
-#loader-feat i { font-style: normal; font-size: 32px; color: #ffd24a; text-shadow: 0 0 16px rgba(255,200,60,.7); }
-#loader-bar { width: 420px; height: 16px; margin-top: 44px; border-radius: 8px; background: #1a1426; border: 1px solid #4a3d6a; overflow: hidden; }
-#loader-fill { width: 0%; height: 100%; border-radius: 8px; background: linear-gradient(90deg, #6a5dff, #b89aff); box-shadow: 0 0 14px #8a78ff; transition: width .15s; }
-#loader-pct { color: #cfc7f5; font-size: 20px; margin-top: 14px; font-family: 'Cinzel', serif; }
+#loader-feat i { font-style: normal; font-size: 30px; color: #ffd24a; text-shadow: 0 0 16px rgba(255,200,60,.7), 0 2px 4px #000; }
+#loader-bar { width: 420px; height: 15px; margin-top: 30px; border-radius: 8px; background: rgba(20,14,32,.85); border: 1px solid #4a3d6a; overflow: hidden; }
+#loader-fill { width: 0%; height: 100%; border-radius: 8px; background: linear-gradient(90deg, #d89a22, #ffd86b); box-shadow: 0 0 14px #ffce53; transition: width .15s; }
+#loader-pct { color: #e6dcc0; font-size: 19px; margin-top: 12px; font-family: 'Cinzel', serif; text-shadow: 0 2px 4px #000; }
 #loader-enter { animation: pulse 1.2s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { transform: scale(1);} 50% { transform: scale(1.07);} }
-#loader-brand { position: absolute; top: 100%; margin-top: 64px; width: 100%; color: #7a7396; font-size: 14px; letter-spacing: 2px; }
+#loader-brand { margin-top: 22px; width: 100%; color: #9a91b6; font-size: 14px; letter-spacing: 2px; text-shadow: 0 1px 3px #000; }
 
 /* ---------- big win ---------- */
 #bigwin { background: rgba(4,2,10,.7); }

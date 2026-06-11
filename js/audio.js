@@ -11,6 +11,7 @@ const SND = (() => {
     master.gain.value = muted ? 0 : 0.55;
     master.connect(ac.destination);
     ambience();
+    music();
   }
 
   function tone(freq, dur, { type = 'sine', vol = 0.3, delay = 0, slide = 0, attack = 0.01 } = {}) {
@@ -48,7 +49,7 @@ const SND = (() => {
     // deep temple drone + slow shimmering wind
     const drone = ac.createOscillator(), dg = ac.createGain();
     drone.type = 'sine'; drone.frequency.value = 52;
-    dg.gain.value = 0.05;
+    dg.gain.value = 0.045;
     drone.connect(dg).connect(master); drone.start();
 
     const len = ac.sampleRate * 4;
@@ -57,11 +58,125 @@ const SND = (() => {
     for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
     const wind = ac.createBufferSource(); wind.buffer = buf; wind.loop = true;
     const wf = ac.createBiquadFilter(); wf.type = 'bandpass'; wf.frequency.value = 320; wf.Q.value = 0.6;
-    const wg = ac.createGain(); wg.gain.value = 0.018;
+    const wg = ac.createGain(); wg.gain.value = 0.015;
     const lfo = ac.createOscillator(), lg = ac.createGain();
-    lfo.frequency.value = 0.09; lg.gain.value = 0.012;
+    lfo.frequency.value = 0.09; lg.gain.value = 0.01;
     lfo.connect(lg).connect(wg.gain); lfo.start();
     wind.connect(wf).connect(wg).connect(master); wind.start();
+  }
+
+  /* ----- continuous generative score: D phrygian-dominant, frame drums ----- */
+  let musicBus = null, musicTimer = null;
+  const ROOT = 146.83; // D3
+  const SCALE = [1, 16 / 15, 5 / 4, 4 / 3, 3 / 2, 8 / 5, 16 / 9, 2]; // hicaz/phrygian dominant
+  let mStep = 0, mNext = 0, mDeg = 0, phraseRest = 0;
+
+  function music() {
+    musicBus = ac.createGain();
+    musicBus.gain.value = 0.20;
+    musicBus.connect(master);
+    // desert echo
+    const dly = ac.createDelay(1.2);
+    dly.delayTime.value = 0.42;
+    const fb = ac.createGain(); fb.gain.value = 0.32;
+    const wet = ac.createGain(); wet.gain.value = 0.4;
+    dly.connect(fb).connect(dly);
+    dly.connect(wet).connect(musicBus);
+    music.send = node => { node.connect(musicBus); node.connect(dly); };
+
+    mNext = ac.currentTime + 0.2;
+    const spb = 60 / 84 / 2; // eighth notes @ 84bpm
+    musicTimer = setInterval(() => {
+      if (muted) { mNext = Math.max(mNext, ac.currentTime + 0.1); return; }
+      while (mNext < ac.currentTime + 0.9) {
+        scheduleStep(mStep, mNext, spb);
+        mStep++; mNext += spb;
+      }
+    }, 220);
+  }
+
+  function ney(freq, t0, dur, vol) {
+    // breathy reed flute: detuned pair + vibrato + lowpass
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(vol, t0 + 0.06);
+    g.gain.setValueAtTime(vol, t0 + dur * 0.6);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    const f = ac.createBiquadFilter();
+    f.type = 'lowpass'; f.frequency.value = 1500; f.Q.value = 1.5;
+    const vib = ac.createOscillator(), vg = ac.createGain();
+    vib.frequency.value = 5.4; vg.gain.value = freq * 0.006;
+    vib.connect(vg);
+    [0, 1.5].forEach(det => {
+      const o = ac.createOscillator();
+      o.type = det ? 'sawtooth' : 'triangle';
+      o.frequency.value = freq + det;
+      vg.connect(o.frequency);
+      const og = ac.createGain(); og.gain.value = det ? 0.25 : 1;
+      o.connect(og).connect(f);
+      o.start(t0); o.stop(t0 + dur + 0.05);
+    });
+    vib.start(t0); vib.stop(t0 + dur + 0.05);
+    f.connect(g);
+    music.send(g);
+  }
+
+  function dum(t0, vol = 0.5) {
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(150, t0);
+    o.frequency.exponentialRampToValueAtTime(54, t0 + 0.16);
+    g.gain.setValueAtTime(vol, t0);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.3);
+    o.connect(g); music.send(g);
+    o.start(t0); o.stop(t0 + 0.35);
+  }
+
+  function tek(t0, vol = 0.16) {
+    const len = (0.06 * ac.sampleRate) | 0;
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const s = ac.createBufferSource(); s.buffer = buf;
+    const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 2400; f.Q.value = 2;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(vol, t0);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.06);
+    s.connect(f).connect(g); music.send(g);
+    s.start(t0);
+  }
+
+  function scheduleStep(step, t0, spb) {
+    const b = step % 16;
+    // maqsum-flavoured frame drum
+    if (b === 0 || b === 6 || b === 8) dum(t0, b === 0 ? 0.55 : 0.4);
+    if (b === 4 || b === 12 || b === 14) tek(t0);
+    if (b === 10 && Math.random() < 0.5) tek(t0, 0.1);
+    // low drone reinforcement each bar
+    if (b === 0) {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sawtooth'; o.frequency.value = ROOT / 2;
+      const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 220;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.linearRampToValueAtTime(0.10, t0 + 0.4);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + spb * 16);
+      o.connect(f).connect(g); music.send(g);
+      o.start(t0); o.stop(t0 + spb * 16 + 0.1);
+    }
+    // wandering melody phrase on off-structure
+    if (b % 2 === 0) {
+      if (phraseRest > 0) { phraseRest--; return; }
+      if (Math.random() < 0.45) return;
+      const moves = [-2, -1, -1, 0, 1, 1, 2, 3];
+      mDeg += moves[(Math.random() * moves.length) | 0];
+      if (mDeg < 0) mDeg = 0;
+      if (mDeg > 7) mDeg = 7;
+      const oct = mDeg === 7 ? 1 : 2;
+      const freq = ROOT * SCALE[mDeg % 8] * oct;
+      const dur = spb * (Math.random() < 0.3 ? 4 : 2) * 0.95;
+      ney(freq, t0, dur, 0.10);
+      if (Math.random() < 0.22) phraseRest = 2 + ((Math.random() * 3) | 0);
+    }
   }
 
   return {
@@ -80,7 +195,8 @@ const SND = (() => {
 
     reelStop(i) {
       tone(110 - i * 6, 0.16, { type: 'sine', vol: 0.5, attack: 0.004 });
-      noiseBurst(0.07, { vol: 0.22, fc: 2600, q: 1.5 });
+      tone(420 - i * 18, 0.05, { type: 'triangle', vol: 0.22, attack: 0.002 });
+      noiseBurst(0.06, { vol: 0.2, fc: 2200, q: 1.2 });
     },
 
     scatter(n) {
@@ -102,11 +218,13 @@ const SND = (() => {
     },
 
     win(level) {
-      // level 0..2 — small/medium/large line win chord
-      const base = [523, 659, 784];
-      const root = base[Math.min(level, 2)];
-      [1, 1.25, 1.5, 2].forEach((m, i) =>
-        tone(root * m, 0.45, { type: 'triangle', vol: 0.16, delay: i * 0.06 }));
+      // harp glissando over the score's scale — longer/higher for bigger wins
+      const notes = 5 + level * 2;
+      for (let i = 0; i < notes; i++) {
+        const f = ROOT * 2 * SCALE[i % 8] * (i >= 8 ? 2 : 1);
+        tone(f, 0.5, { type: 'triangle', vol: 0.15, delay: i * 0.055 });
+        tone(f * 2, 0.3, { type: 'sine', vol: 0.05, delay: i * 0.055 });
+      }
     },
 
     bigwin() {

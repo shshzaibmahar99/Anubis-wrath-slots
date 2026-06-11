@@ -3,6 +3,38 @@ const SymbolArt = (() => {
   const SIZE = 220;
   const cache = {};
 
+  /* premium symbols use the bundled artwork; everything else is procedural */
+  const IMG_SRC = {
+    anubis:  'assets/sym-anubis.png',
+    scales:  'assets/sym-scales.png',
+    wild:    'assets/sym-wild.png',
+    scatter: 'assets/sym-scatter.png',
+    ankh:    'assets/sym-ankh.png',
+    eye:     'assets/sym-crook.png'
+  };
+  const imgs = {};
+
+  function preload(onProgress) {
+    const keys = Object.keys(IMG_SRC);
+    let done = 0;
+    const tick = () => { done++; if (onProgress) onProgress(done / keys.length); };
+    return Promise.all(keys.map(k => new Promise(res => {
+      const im = new Image();
+      im.onload = () => { imgs[k] = im; tick(); res(); };
+      im.onerror = () => { tick(); res(); }; // procedural fallback keeps the game playable
+      im.src = IMG_SRC[k];
+    }))).then(() => { Object.keys(cache).forEach(k => delete cache[k]); });
+  }
+
+  function fromImage(id) {
+    return make(x => {
+      x.shadowColor = 'rgba(0,0,0,.65)';
+      x.shadowBlur = 12;
+      x.shadowOffsetY = 7;
+      x.drawImage(imgs[id], 5, 2, SIZE - 10, SIZE - 10);
+    });
+  }
+
   /* ---------- helpers ---------- */
   function make(draw) {
     const c = document.createElement('canvas');
@@ -104,34 +136,64 @@ const SymbolArt = (() => {
     x.shadowOffsetY = 7;
   }
 
-  /* ---------- royals A K Q J 10 9 ---------- */
+  /* ---------- royals A K Q J 10 9 (ancient carved-gold style) ---------- */
   function royal(letter, hue) {
     return make(x => {
-      const cx = SIZE / 2, cy = 104;
+      const cx = SIZE / 2, cy = 110;
+      const fs = letter.length > 1 ? 108 : 140;
+      const font = `900 ${fs}px "Cinzel Decorative", Cinzel, "Times New Roman", serif`;
+
+      // glyph body with inlays, built on its own layer so the
+      // banding/sheen stays inside the letter face only
+      const t = document.createElement('canvas');
+      t.width = t.height = SIZE;
+      const tx = t.getContext('2d');
+      tx.font = font;
+      tx.textAlign = 'center'; tx.textBaseline = 'middle';
+      tx.fillStyle = goldGrad(tx, cy - fs / 2, cy + fs / 2);
+      tx.fillText(letter, cx, cy);
+      tx.globalCompositeOperation = 'source-atop';
+      // hammered horizontal banding (like the crook & flail stripes)
+      for (let y = cy - fs / 2; y < cy + fs / 2; y += 16) {
+        tx.fillStyle = 'rgba(120,70,8,.30)';
+        tx.fillRect(0, y + 9, SIZE, 5);
+        tx.fillStyle = 'rgba(255,244,200,.16)';
+        tx.fillRect(0, y, SIZE, 2.5);
+      }
+      // lapis inlay strip across the middle
+      const lap = tx.createLinearGradient(0, cy - 7, 0, cy + 9);
+      lap.addColorStop(0, 'rgba(60,120,200,.55)');
+      lap.addColorStop(1, 'rgba(15,40,100,.55)');
+      tx.fillStyle = lap;
+      tx.fillRect(0, cy - 7, SIZE, 16);
+      // strong top sheen
+      const sheen = tx.createLinearGradient(0, cy - fs / 2, 0, cy);
+      sheen.addColorStop(0, 'rgba(255,252,230,.7)');
+      sheen.addColorStop(1, 'rgba(255,252,230,0)');
+      tx.fillStyle = sheen;
+      tx.fillRect(0, 0, SIZE, cy);
+      tx.globalCompositeOperation = 'source-over';
+
       x.save();
-      x.translate(cx, cy);
-      const fs = letter.length > 1 ? 104 : 132;
-      x.font = `900 ${fs}px Cinzel, "Times New Roman", serif`;
+      x.font = font;
       x.textAlign = 'center'; x.textBaseline = 'middle';
       x.lineJoin = 'round';
       symbolShadow(x);
-      x.lineWidth = 18; x.strokeStyle = '#2e1c06';
-      x.strokeText(letter, 0, 0);
+      x.lineWidth = 22; x.strokeStyle = '#1c1006';
+      x.strokeText(letter, cx, cy);
       x.shadowColor = 'transparent';
-      x.lineWidth = 11; x.strokeStyle = '#7a4d10';
-      x.strokeText(letter, 0, 0);
-      x.fillStyle = goldGrad(x, -fs / 2, fs / 2);
-      x.fillText(letter, 0, 0);
-      // engraved inner line
-      x.lineWidth = 2; x.strokeStyle = 'rgba(120,70,10,.65)';
-      x.strokeText(letter, 0, -2);
-      // top sheen
-      x.globalAlpha = 0.35;
-      x.fillStyle = '#fffbe8';
-      x.fillText(letter, 0, -4);
-      x.globalAlpha = 1;
+      x.lineWidth = 13; x.strokeStyle = '#8a5a10';
+      x.strokeText(letter, cx, cy);
+      x.lineWidth = 5; x.strokeStyle = '#ffe9a0';
+      x.strokeText(letter, cx, cy);
+      x.drawImage(t, 0, 0);
+      // engraved hairline
+      x.lineWidth = 1.6; x.strokeStyle = 'rgba(90,50,6,.7)';
+      x.strokeText(letter, cx, cy - 2);
       x.restore();
-      gem(x, cx, 182, 15, hue);
+
+      // gem set into the heart of the glyph
+      gem(x, cx, cy + 2, 16, hue);
     });
   }
 
@@ -639,8 +701,9 @@ const SymbolArt = (() => {
 
   return {
     SIZE,
+    preload,
     get(id) {
-      if (!cache[id]) cache[id] = builders[id]();
+      if (!cache[id]) cache[id] = imgs[id] ? fromImage(id) : builders[id]();
       return cache[id];
     },
     rebuild() { Object.keys(cache).forEach(k => delete cache[k]); }
