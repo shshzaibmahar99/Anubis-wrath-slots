@@ -387,19 +387,51 @@ function drawMults(now) {
   g.addColorStop(0, '#2c2114'); g.addColorStop(1, '#171008');
   mx.fillStyle = g;
   mx.fillRect(0, 0, 660, 92);
+  // beaded gold edges
+  for (let bxp = 12; bxp < 660; bxp += 18) {
+    const bg2 = mx.createRadialGradient(bxp - 1, 3.4, 0.5, bxp, 4.5, 3.4);
+    bg2.addColorStop(0, '#ffe9a0'); bg2.addColorStop(1, '#8a5a10');
+    mx.fillStyle = bg2;
+    mx.beginPath(); mx.arc(bxp, 4.5, 3.4, 0, Math.PI * 2); mx.fill();
+    mx.beginPath(); mx.arc(bxp, 87.5, 3.4, 0, Math.PI * 2); mx.fill();
+  }
 
   for (let c = 0; c < COLS; c++) {
     const px = c * CELL, locked = state.multLock[c];
-    // plaque
-    const pg = mx.createLinearGradient(0, 8, 0, 84);
-    pg.addColorStop(0, '#4a3a20'); pg.addColorStop(0.5, '#211608'); pg.addColorStop(1, '#33240f');
+    // carved cartouche plaque
+    const pg = mx.createLinearGradient(0, 10, 0, 82);
+    pg.addColorStop(0, '#54401f'); pg.addColorStop(0.5, '#241808'); pg.addColorStop(1, '#3a2a10');
     mx.fillStyle = pg;
     mx.beginPath();
-    mx.roundRect(px + 7, 8, CELL - 14, 76, 8);
+    mx.roundRect(px + 8, 11, CELL - 16, 70, 22);
     mx.fill();
-    mx.lineWidth = 2;
-    mx.strokeStyle = locked ? '#c9a24a' : '#6e5a26';
+    mx.lineWidth = 3.5;
+    mx.strokeStyle = locked ? '#e8c560' : '#6e5a26';
     mx.stroke();
+    mx.lineWidth = 1.5;
+    mx.strokeStyle = '#2a1c08';
+    mx.beginPath();
+    mx.roundRect(px + 4.5, 7.5, CELL - 9, 77, 25);
+    mx.stroke();
+    // engraved inner rope ring
+    mx.save();
+    mx.setLineDash([5, 4]);
+    mx.lineWidth = 1.6;
+    mx.strokeStyle = locked ? 'rgba(255,233,160,.55)' : 'rgba(160,130,70,.4)';
+    mx.beginPath();
+    mx.roundRect(px + 13, 16, CELL - 26, 60, 17);
+    mx.stroke();
+    mx.restore();
+    // gem studs on the sides
+    [[px + 14, c % 2 ? 168 : 0], [px + CELL - 14, c % 2 ? 0 : 168]].forEach(([gx, hue]) => {
+      const gg = mx.createRadialGradient(gx - 1.4, 44.5, 0.6, gx, 46, 4.6);
+      gg.addColorStop(0, `hsl(${hue},90%,85%)`);
+      gg.addColorStop(0.5, `hsl(${hue},90%,50%)`);
+      gg.addColorStop(1, `hsl(${hue},90%,18%)`);
+      mx.fillStyle = gg;
+      mx.beginPath(); mx.arc(gx, 46, 4.6, 0, Math.PI * 2); mx.fill();
+      mx.lineWidth = 1.4; mx.strokeStyle = '#8a5a10'; mx.stroke();
+    });
 
     let v = state.mults[c];
     if (!locked) v = [2, 3, 5, 10, 25, 50, 100, 500][((now / 80) | 0) + c * 3 & 7];
