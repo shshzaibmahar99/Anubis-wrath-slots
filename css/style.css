@@ -166,6 +166,15 @@ html, body {
 .round-btn label { font-size: 12px; letter-spacing: 1px; pointer-events: none; }
 .round-btn .glyph { font-size: 42px; line-height: 1; color: #e8e2ff; font-family: Arial, sans-serif; }
 .round-btn.small { width: 46px; height: 46px; font-size: 19px; font-weight: 900; color: #e6d9a8; border-color: #6e5a26; }
+.round-btn.small svg { width: 25px; height: 25px; fill: none; }
+.round-btn.small svg .spk { fill: #ffd86b; stroke: none; }
+.round-btn.small svg .wave, .round-btn.small svg .ln {
+  stroke: #ffd86b; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; fill: none;
+}
+.round-btn.small svg .mute-x { display: none; stroke: #ff5d4a; stroke-width: 2.3; stroke-linecap: round; }
+#btn-sound.muted svg .wave { display: none; }
+#btn-sound.muted svg .mute-x { display: block; }
+#btn-sound.muted svg .spk { fill: #8d8470; }
 .round-btn.active { border-color: #ffd24a; box-shadow: 0 0 22px rgba(255,200,60,.55), 0 5px 14px rgba(0,0,0,.8); }
 .round-btn.active svg { fill: #ffd24a; }
 .round-btn:disabled { opacity: .45; }
@@ -276,6 +285,21 @@ html, body {
   display: flex; flex-direction: column; align-items: center;
   padding: 54px 0 64px;
 }
+#loader-presents {
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  margin-bottom: 16px; padding: 9px 34px 8px;
+  border: 2px solid #c9a24a; border-radius: 30px;
+  background: linear-gradient(180deg, rgba(40,26,8,.88), rgba(14,8,2,.88));
+  box-shadow: 0 0 22px rgba(255,190,60,.35), 0 4px 12px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,240,190,.25);
+}
+#loader-presents b {
+  font-family: 'Cinzel Decorative', 'Cinzel', serif; font-weight: 900;
+  font-size: 30px; letter-spacing: 5px;
+  background: linear-gradient(180deg, #fff3c4, #ffd86b 45%, #c08b1e);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 2px 3px #000);
+}
+#loader-presents span { font-size: 12px; letter-spacing: 8px; color: #d8c89a; text-shadow: 0 1px 3px #000; }
 #loader-title {
   font-family: 'Cinzel Decorative', 'Cinzel', serif; font-weight: 900;
   font-size: 88px; line-height: .95; letter-spacing: 4px;

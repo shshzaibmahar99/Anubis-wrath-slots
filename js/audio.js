@@ -8,7 +8,7 @@ const SND = (() => {
     if (!AC) return;
     ac = new AC();
     master = ac.createGain();
-    master.gain.value = muted ? 0 : 0.55;
+    master.gain.value = muted ? 0 : 0.65;
     master.connect(ac.destination);
     ambience();
     music();
@@ -73,7 +73,7 @@ const SND = (() => {
 
   function music() {
     musicBus = ac.createGain();
-    musicBus.gain.value = 0.20;
+    musicBus.gain.value = 0.40;
     musicBus.connect(master);
     // desert echo
     const dly = ac.createDelay(1.2);
@@ -149,19 +149,44 @@ const SND = (() => {
   function scheduleStep(step, t0, spb) {
     const b = step % 16;
     // maqsum-flavoured frame drum
-    if (b === 0 || b === 6 || b === 8) dum(t0, b === 0 ? 0.55 : 0.4);
-    if (b === 4 || b === 12 || b === 14) tek(t0);
-    if (b === 10 && Math.random() < 0.5) tek(t0, 0.1);
+    if (b === 0 || b === 6 || b === 8) dum(t0, b === 0 ? 0.9 : 0.65);
+    if (b === 4 || b === 12 || b === 14) tek(t0, 0.3);
+    if (b === 10 && Math.random() < 0.5) tek(t0, 0.18);
+    // distant fire crackle
+    if (Math.random() < 0.3) {
+      const len = ((0.02 + Math.random() * 0.05) * ac.sampleRate) | 0;
+      const buf = ac.createBuffer(1, len, ac.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+      const s = ac.createBufferSource(); s.buffer = buf;
+      const f = ac.createBiquadFilter(); f.type = 'bandpass';
+      f.frequency.value = 2800 + Math.random() * 2600; f.Q.value = 1.4;
+      const g = ac.createGain(); g.gain.value = 0.05 + Math.random() * 0.08;
+      s.connect(f).connect(g).connect(master);
+      s.start(t0 + Math.random() * spb);
+    }
     // low drone reinforcement each bar
     if (b === 0) {
       const o = ac.createOscillator(), g = ac.createGain();
       o.type = 'sawtooth'; o.frequency.value = ROOT / 2;
       const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 220;
       g.gain.setValueAtTime(0.0001, t0);
-      g.gain.linearRampToValueAtTime(0.10, t0 + 0.4);
+      g.gain.linearRampToValueAtTime(0.16, t0 + 0.4);
       g.gain.exponentialRampToValueAtTime(0.0001, t0 + spb * 16);
       o.connect(f).connect(g); music.send(g);
       o.start(t0); o.stop(t0 + spb * 16 + 0.1);
+    }
+    // warm pad swell (root + fifth) every half bar phrase
+    if (b === 0 || b === 8) {
+      [1, 1.5].forEach(m => {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.type = 'sine'; o.frequency.value = ROOT * m;
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.linearRampToValueAtTime(0.07, t0 + spb * 3);
+        g.gain.linearRampToValueAtTime(0.0001, t0 + spb * 8);
+        o.connect(g); music.send(g);
+        o.start(t0); o.stop(t0 + spb * 8 + 0.1);
+      });
     }
     // wandering melody phrase on off-structure
     if (b % 2 === 0) {
@@ -174,17 +199,27 @@ const SND = (() => {
       const oct = mDeg === 7 ? 1 : 2;
       const freq = ROOT * SCALE[mDeg % 8] * oct;
       const dur = spb * (Math.random() < 0.3 ? 4 : 2) * 0.95;
-      ney(freq, t0, dur, 0.10);
+      ney(freq, t0, dur, 0.19);
       if (Math.random() < 0.22) phraseRest = 2 + ((Math.random() * 3) | 0);
     }
   }
 
   return {
     init,
-    setMuted(m) { muted = m; if (master) master.gain.value = m ? 0 : 0.55; },
+    setMuted(m) { muted = m; if (master) master.gain.value = m ? 0 : 0.65; },
     isMuted() { return muted; },
 
     click() { tone(640, 0.07, { type: 'triangle', vol: 0.22 }); tone(1280, 0.05, { type: 'sine', vol: 0.1, delay: 0.015 }); },
+
+    blip(up) {
+      // bet +/- ticks
+      const f = up ? 760 : 520;
+      tone(f, 0.06, { type: 'triangle', vol: 0.24 });
+      tone(f * 1.5, 0.05, { type: 'sine', vol: 0.12, delay: 0.03 });
+    },
+
+    open() { tone(440, 0.12, { type: 'sine', vol: 0.2 }); tone(660, 0.14, { type: 'sine', vol: 0.16, delay: 0.06 }); },
+    close() { tone(660, 0.1, { type: 'sine', vol: 0.16 }); tone(440, 0.12, { type: 'sine', vol: 0.18, delay: 0.05 }); },
 
     spinStart() {
       noiseBurst(0.35, { vol: 0.18, fc: 900, q: 0.8 });
