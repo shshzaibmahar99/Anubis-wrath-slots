@@ -212,6 +212,17 @@ const plaque = (() => {
     x.arc(rnd(0, CELL), rnd(0, CELL), rnd(4, 22), 0, Math.PI * 2);
     x.fill();
   }
+  // faint carved hieroglyphs
+  x.strokeStyle = 'rgba(10,20,38,.30)';
+  x.lineWidth = 2;
+  for (let i = 0; i < 5; i++) {
+    const gx = rnd(14, CELL - 28), gy = rnd(14, CELL - 28), t = Math.random();
+    x.beginPath();
+    if (t < 0.34) { x.arc(gx + 7, gy + 7, 6, 0, Math.PI * 2); }
+    else if (t < 0.67) { x.moveTo(gx, gy + 12); x.quadraticCurveTo(gx + 7, gy - 6, gx + 14, gy + 12); }
+    else { x.rect(gx, gy, 12, 9); }
+    x.stroke();
+  }
   // bevel
   x.strokeStyle = 'rgba(180,205,230,.35)'; x.lineWidth = 2;
   x.strokeRect(2, 2, CELL - 4, CELL - 4);
@@ -524,15 +535,27 @@ function paintStaticBg() {
   });
 }
 
-/* particles: flames, embers, dust, coins */
-const flames = [], dust = [], coins = [];
+/* particles: flames, sparks, embers, dust, coins */
+const flames = [], sparks = [], dust = [], coins = [];
+const BOWLS = [[86, 1198], [634, 1198]];
 for (let i = 0; i < 26; i++)
   dust.push({ x: rnd(0, 720), y: rnd(0, 1280), s: rnd(0.8, 2.4), v: rnd(4, 14), p: rnd(0, 7) });
 
 function spawnFlames() {
-  [[86, 1200], [634, 1200]].forEach(([px, py]) => {
-    for (let i = 0; i < 2; i++)
-      flames.push({ x: px + rnd(-26, 26), y: py + rnd(-4, 4), vy: rnd(-2.6, -1.2), vx: rnd(-0.3, 0.3), life: 1, r: rnd(7, 16) });
+  BOWLS.forEach(([px, py]) => {
+    for (let i = 0; i < 3; i++)
+      flames.push({
+        x: px + rnd(-24, 24), y: py + rnd(-2, 6),
+        vx: rnd(-0.25, 0.25), vy: rnd(-3.6, -1.7),
+        life: 1, decay: rnd(0.028, 0.05),
+        r: rnd(9, 21), wob: rnd(0, 7), ws: rnd(2, 4)
+      });
+    if (Math.random() < 0.55)
+      sparks.push({
+        x: px + rnd(-22, 22), y: py - rnd(0, 14),
+        vx: rnd(-0.7, 0.7), vy: rnd(-6, -2.6),
+        life: 1, decay: rnd(0.008, 0.02), r: rnd(1.2, 2.8), tw: rnd(0, 7)
+      });
   });
 }
 
@@ -567,20 +590,66 @@ function drawBg(now, dt) {
   }
   bx.globalAlpha = 1;
 
-  // flames (additive)
+  // fire (additive): pulsing ground glow, layered teardrop flames, twinkling sparks
   spawnFlames();
   bx.globalCompositeOperation = 'lighter';
+
+  for (const [px, py] of BOWLS) {
+    const pulse = 0.7 + 0.18 * Math.sin(now / 140 + px) + 0.12 * Math.sin(now / 47 + px * 2);
+    let g = bx.createRadialGradient(px, py - 14, 6, px, py - 14, 150 * pulse);
+    g.addColorStop(0, `rgba(255,150,40,${0.20 * pulse})`);
+    g.addColorStop(0.45, `rgba(220,80,15,${0.10 * pulse})`);
+    g.addColorStop(1, 'rgba(120,20,0,0)');
+    bx.fillStyle = g;
+    bx.beginPath(); bx.arc(px, py - 14, 150 * pulse, 0, Math.PI * 2); bx.fill();
+    // hot core sitting in the bowl
+    g = bx.createRadialGradient(px, py - 8, 1, px, py - 8, 36);
+    g.addColorStop(0, `rgba(255,235,170,${0.5 * pulse})`);
+    g.addColorStop(0.5, `rgba(255,150,40,${0.3 * pulse})`);
+    g.addColorStop(1, 'rgba(200,60,0,0)');
+    bx.fillStyle = g;
+    bx.beginPath(); bx.arc(px, py - 8, 36, 0, Math.PI * 2); bx.fill();
+  }
+
   for (let i = flames.length - 1; i >= 0; i--) {
     const f = flames[i];
-    f.x += f.vx; f.y += f.vy; f.life -= 0.03 + dt * 0.4; f.r *= 0.97;
-    if (f.life <= 0) { flames.splice(i, 1); continue; }
+    f.x += f.vx + Math.sin(f.wob + (1 - f.life) * f.ws * 2) * 0.5;
+    f.y += f.vy;
+    f.life -= f.decay + dt * 0.25;
+    f.r *= 0.975;
+    if (f.life <= 0 || f.r < 1.5) { flames.splice(i, 1); continue; }
     const l = f.life;
-    const fg2 = bx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
-    fg2.addColorStop(0, `rgba(255,${(190 * l + 40) | 0},40,${0.5 * l})`);
-    fg2.addColorStop(0.6, `rgba(255,${(90 * l) | 0},10,${0.28 * l})`);
-    fg2.addColorStop(1, 'rgba(120,10,0,0)');
+    // teardrop: bright round base + stretched tip above
+    let fg2 = bx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
+    if (l > 0.65) {
+      fg2.addColorStop(0, `rgba(255,240,190,${0.55 * l})`);
+      fg2.addColorStop(0.45, `rgba(255,180,50,${0.4 * l})`);
+    } else {
+      fg2.addColorStop(0, `rgba(255,${(160 * l + 40) | 0},30,${0.45 * l})`);
+      fg2.addColorStop(0.45, `rgba(235,${(80 * l) | 0},8,${0.26 * l})`);
+    }
+    fg2.addColorStop(1, 'rgba(110,8,0,0)');
     bx.fillStyle = fg2;
     bx.beginPath(); bx.arc(f.x, f.y, f.r, 0, Math.PI * 2); bx.fill();
+    bx.save();
+    bx.translate(f.x, f.y - f.r * 0.9);
+    bx.scale(0.55, 1.5);
+    bx.fillStyle = fg2;
+    bx.globalAlpha = 0.5;
+    bx.beginPath(); bx.arc(0, 0, f.r * 0.6, 0, Math.PI * 2); bx.fill();
+    bx.restore();
+    bx.globalAlpha = 1;
+  }
+
+  for (let i = sparks.length - 1; i >= 0; i--) {
+    const s = sparks[i];
+    s.x += s.vx + Math.sin(now / 90 + s.tw) * 0.5;
+    s.y += s.vy; s.vy *= 0.995;
+    s.life -= s.decay;
+    if (s.life <= 0 || s.y < 700) { sparks.splice(i, 1); continue; }
+    const fl = 0.5 + 0.5 * Math.sin(now / 35 + s.tw * 3);
+    bx.fillStyle = `rgba(255,${(150 + 80 * s.life) | 0},70,${s.life * (0.4 + 0.6 * fl)})`;
+    bx.beginPath(); bx.arc(s.x, s.y, s.r * (0.6 + 0.4 * s.life), 0, Math.PI * 2); bx.fill();
   }
   bx.globalCompositeOperation = 'source-over';
 
@@ -1004,9 +1073,12 @@ window.addEventListener('resize', fit);
 
 /* ---------------- loader ---------------- */
 function runLoader() {
-  let p = 0;
+  // bar tracks real artwork loading (last 76%) then releases the enter button
+  let p = 0, target = 24;
+  SymbolArt.preload(prog => { target = 24 + prog * 76; })
+    .then(() => { target = 100; });
   const iv = setInterval(() => {
-    p = Math.min(100, p + rnd(3, 9));
+    p = Math.min(target, p + rnd(2, 6));
     el.loaderFill.style.width = p + '%';
     el.loaderPct.textContent = `Loading Game  [${p | 0}%]`;
     if (p >= 100) {
