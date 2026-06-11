@@ -398,15 +398,15 @@ function drawMults(now) {
 
   for (let c = 0; c < COLS; c++) {
     const px = c * CELL, locked = state.multLock[c];
-    // carved cartouche plaque
+    // carved cartouche plaque — navy face with bronze ring like the buttons
     const pg = mx.createLinearGradient(0, 10, 0, 82);
-    pg.addColorStop(0, '#54401f'); pg.addColorStop(0.5, '#241808'); pg.addColorStop(1, '#3a2a10');
+    pg.addColorStop(0, '#27335a'); pg.addColorStop(0.55, '#10162c'); pg.addColorStop(1, '#1a2240');
     mx.fillStyle = pg;
     mx.beginPath();
     mx.roundRect(px + 8, 11, CELL - 16, 70, 22);
     mx.fill();
     mx.lineWidth = 3.5;
-    mx.strokeStyle = locked ? '#e8c560' : '#6e5a26';
+    mx.strokeStyle = locked ? '#caa14e' : '#54400f';
     mx.stroke();
     mx.lineWidth = 1.5;
     mx.strokeStyle = '#2a1c08';
@@ -461,6 +461,120 @@ function drawMults(now) {
     mx.fillStyle = locked ? tg : 'rgba(190,170,120,.65)';
     mx.fillText('x' + v, 0, 2);
     mx.restore();
+  }
+}
+
+/* ----- ornate antique-bronze frame (matches the reference buttons) ----- */
+const frameDeco = document.getElementById('frame-deco');
+function paintFrameDeco() {
+  const w = frameDeco.offsetWidth, h = frameDeco.offsetHeight;
+  if (!w || !h) return;
+  frameDeco.width = w; frameDeco.height = h;
+  const x = frameDeco.getContext('2d');
+  const band = 17, R = 20;
+
+  // bronze band with metallic banding
+  const ring = new Path2D();
+  ring.roundRect(1.5, 1.5, w - 3, h - 3, R);
+  ring.roundRect(band, band, w - band * 2, h - band * 2, R - 9);
+  const bg = x.createLinearGradient(0, 0, 0, h);
+  bg.addColorStop(0, '#7c5a22');
+  bg.addColorStop(0.18, '#3a2810');
+  bg.addColorStop(0.5, '#8a6428');
+  bg.addColorStop(0.82, '#2c1d0a');
+  bg.addColorStop(1, '#6b4a1e');
+  x.fillStyle = bg;
+  x.fill(ring, 'evenodd');
+
+  x.save();
+  x.clip(ring, 'evenodd');
+  // aged patina speckle
+  for (let i = 0; i < 800; i++) {
+    x.fillStyle = Math.random() < 0.5 ? 'rgba(18,9,2,.16)' : 'rgba(240,210,140,.09)';
+    x.fillRect(Math.random() * w, Math.random() * h, 1.7, 1.7);
+  }
+  // greek meander engraving along all four sides
+  x.strokeStyle = 'rgba(240,205,120,.7)';
+  x.lineWidth = 1.9;
+  x.lineJoin = 'miter';
+  const u = 23, s = 9, mid = (band - s) / 2 + 1.5;
+  const key = (ox, oy) => {
+    x.moveTo(ox, oy + s);
+    x.lineTo(ox, oy);
+    x.lineTo(ox + u * 0.74, oy);
+    x.lineTo(ox + u * 0.74, oy + s * 0.64);
+    x.lineTo(ox + u * 0.32, oy + s * 0.64);
+    x.lineTo(ox + u * 0.32, oy + s * 0.32);
+    x.lineTo(ox + u * 0.52, oy + s * 0.32);
+  };
+  const row = len => {
+    x.beginPath();
+    for (let ox = R + 16; ox < len - R - 16 - u; ox += u) key(ox, mid);
+    x.stroke();
+  };
+  row(w);                                                                   // top
+  x.save(); x.translate(0, h); x.scale(1, -1); row(w); x.restore();         // bottom
+  x.save(); x.translate(0, h); x.rotate(-Math.PI / 2); row(h); x.restore(); // left
+  x.save(); x.translate(w, 0); x.rotate(Math.PI / 2); row(h); x.restore();  // right
+  x.restore();
+
+  // chiselled edge lines
+  x.lineWidth = 2.5; x.strokeStyle = '#120a04';
+  x.beginPath(); x.roundRect(1.5, 1.5, w - 3, h - 3, R); x.stroke();
+  x.lineWidth = 1.4; x.strokeStyle = 'rgba(240,210,140,.85)';
+  x.beginPath(); x.roundRect(4, 4, w - 8, h - 8, R - 2); x.stroke();
+  x.lineWidth = 2.2; x.strokeStyle = '#120a04';
+  x.beginPath(); x.roundRect(band, band, w - band * 2, h - band * 2, R - 9); x.stroke();
+  x.lineWidth = 1.3; x.strokeStyle = 'rgba(240,210,140,.7)';
+  x.beginPath(); x.roundRect(band - 2.5, band - 2.5, w - (band - 2.5) * 2, h - (band - 2.5) * 2, R - 8); x.stroke();
+
+  // gem medallions, same language as the reference buttons
+  const med = (cx, cy, r, kind) => {
+    const mg = x.createRadialGradient(cx - r * 0.3, cy - r * 0.35, r * 0.2, cx, cy, r);
+    mg.addColorStop(0, '#caa14e'); mg.addColorStop(0.55, '#8a6428'); mg.addColorStop(1, '#2c1d0a');
+    x.fillStyle = mg;
+    x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fill();
+    x.lineWidth = 2; x.strokeStyle = '#120a04'; x.stroke();
+    x.lineWidth = 1.2; x.strokeStyle = 'rgba(240,210,140,.85)';
+    x.beginPath(); x.arc(cx, cy, r - 2.4, 0, Math.PI * 2); x.stroke();
+    const gr = r * 0.45;
+    const gg = x.createRadialGradient(cx - gr * 0.35, cy - gr * 0.4, gr * 0.15, cx, cy, gr);
+    if (kind === 'red') {
+      gg.addColorStop(0, '#ffc8c0'); gg.addColorStop(0.5, '#d92a22'); gg.addColorStop(1, '#4a0406');
+      x.shadowColor = 'rgba(255,60,40,.85)';
+    } else {
+      gg.addColorStop(0, '#cfe2ff'); gg.addColorStop(0.5, '#2a62c8'); gg.addColorStop(1, '#0a1c4a');
+      x.shadowColor = 'rgba(70,130,255,.85)';
+    }
+    x.shadowBlur = 10;
+    x.fillStyle = gg;
+    x.beginPath(); x.arc(cx, cy, gr, 0, Math.PI * 2); x.fill();
+    x.shadowColor = 'transparent'; x.shadowBlur = 0;
+    x.lineWidth = 1.4; x.strokeStyle = '#5e431a'; x.stroke();
+    x.fillStyle = 'rgba(255,255,255,.85)';
+    x.beginPath(); x.arc(cx - gr * 0.3, cy - gr * 0.35, gr * 0.22, 0, Math.PI * 2); x.fill();
+  };
+  med(band + 1, band + 1, 15, 'red');
+  med(w - band - 1, band + 1, 15, 'red');
+  med(band + 1, h - band - 1, 15, 'blue');
+  med(w - band - 1, h - band - 1, 15, 'blue');
+  med(band / 2 + 1.5, h / 2, 11, 'red');
+  med(w - band / 2 - 1.5, h / 2, 11, 'red');
+
+  // winged crest peeking out beside the ways banner
+  const feather = (fx, fy, ang, len, wdt) => {
+    x.save(); x.translate(fx, fy); x.rotate(ang);
+    const fg = x.createLinearGradient(0, 0, len, 0);
+    fg.addColorStop(0, '#8a6428'); fg.addColorStop(0.6, '#d8b15c'); fg.addColorStop(1, '#f0dca0');
+    x.fillStyle = fg;
+    x.beginPath(); x.ellipse(len / 2, 0, len / 2, wdt, 0, 0, Math.PI * 2); x.fill();
+    x.lineWidth = 1; x.strokeStyle = 'rgba(18,10,4,.8)'; x.stroke();
+    x.restore();
+  };
+  for (let i = 0; i < 5; i++) {
+    const ang = (i - 2) * 0.15, len = 58 - Math.abs(i - 2) * 9, wd = 5 - Math.abs(i - 2) * 0.6;
+    feather(w / 2 - 118, 14, Math.PI - ang, len, wd);
+    feather(w / 2 + 118, 14, ang, len, wd);
   }
 }
 
@@ -1182,9 +1296,10 @@ function boot() {
   setWin(0);
   runLoader();
   requestAnimationFrame(loop);
+  requestAnimationFrame(paintFrameDeco);
   // re-render symbols once the Cinzel webfont is available
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => SymbolArt.rebuild());
+    document.fonts.ready.then(() => { SymbolArt.rebuild(); paintFrameDeco(); });
   }
 }
 boot();
