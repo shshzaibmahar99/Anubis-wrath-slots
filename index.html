@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#070510">
+<title>Anubis Wrath — BET 777</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="scaler">
+  <div id="stage">
+    <canvas id="bg" width="720" height="1280"></canvas>
+
+    <div id="game-ui">
+      <div id="topbar">
+        <div id="logo">ANUBIS <b>WRATH</b><em>BY BET&nbsp;777</em></div>
+        <div id="top-buttons">
+          <button class="round-btn small" id="btn-sound" title="Sound">&#128266;</button>
+          <button class="round-btn small" id="btn-info" title="Paytable">i</button>
+        </div>
+      </div>
+
+      <div id="frame">
+        <div id="ways-banner"><span>1024 WAYS</span></div>
+        <canvas id="mults" width="660" height="92"></canvas>
+        <div id="reel-window">
+          <canvas id="reels" width="660" height="528"></canvas>
+          <div id="fs-counter" class="hidden">FREE SPINS <b id="fs-left">15</b></div>
+        </div>
+        <button id="feature-buy">FEATURE BUY<small id="fb-cost"></small></button>
+      </div>
+
+      <div id="ticker"><div id="ticker-text">TRIGGERS 15 OR MORE FREE SPINS!</div></div>
+
+      <div id="info-bar">
+        <div class="info-cell"><i class="ic ic-coin"></i><label>WIN</label><span id="lbl-win">Rs0.00</span></div>
+        <div class="info-cell mid"><i class="ic ic-bet"></i><label>BET</label><span id="lbl-bet">Rs300.00</span></div>
+        <div class="info-cell"><i class="ic ic-bal"></i><label>BALANCE</label><span id="lbl-balance">Rs100,000.00</span></div>
+      </div>
+
+      <div id="controls">
+        <button class="round-btn" id="btn-turbo"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg><label>TURBO</label></button>
+        <button class="round-btn" id="btn-minus"><span class="glyph">&minus;</span></button>
+        <button id="btn-spin" aria-label="Spin">
+          <svg id="spin-icon" viewBox="0 0 100 100">
+            <path d="M50 8a42 42 0 0 1 36.4 21H74l16 14 8-22-9.3 5A50 50 0 0 0 50 0v8z"/>
+            <path d="M50 92A42 42 0 0 1 13.6 71H26L10 57 2 79l9.3-5A50 50 0 0 0 50 100v-8z"/>
+          </svg>
+          <span id="spin-count" class="hidden"></span>
+        </button>
+        <button class="round-btn" id="btn-plus"><span class="glyph">+</span></button>
+        <button class="round-btn" id="btn-auto"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><label>AUTO</label></button>
+      </div>
+    </div>
+
+    <!-- overlays -->
+    <div id="loader" class="overlay">
+      <div id="loader-art"></div>
+      <div id="loader-content">
+        <div id="loader-title">ANUBIS<br><span>WRATH</span></div>
+        <div id="loader-divider"></div>
+        <div id="loader-feat">FEATURING<br><b>MULTIPLIER REELS UP TO <i>x500</i>!</b><br><b>WIN UP TO <i>10000x</i>!</b></div>
+        <div id="loader-bar"><div id="loader-fill"></div></div>
+        <div id="loader-pct">Loading Game&nbsp; [0%]</div>
+        <button id="loader-enter" class="gold-btn hidden">TAP TO ENTER</button>
+        <div id="loader-brand">BET&nbsp;777 &bull; FOR ENTERTAINMENT ONLY &bull; DEMO CREDITS</div>
+      </div>
+    </div>
+
+    <div id="bigwin" class="overlay hidden">
+      <div id="bigwin-title">BIG WIN</div>
+      <div id="bigwin-amount">Rs0.00</div>
+      <div id="bigwin-hint">TAP TO CONTINUE</div>
+    </div>
+
+    <div id="fs-intro" class="overlay hidden">
+      <div class="panel">
+        <div class="panel-title">ANUBIS AWAKENS</div>
+        <div class="panel-big" id="fs-intro-num">15</div>
+        <div class="panel-sub">FREE SPINS</div>
+        <button class="gold-btn" id="fs-start">START</button>
+      </div>
+    </div>
+
+    <div id="fs-end" class="overlay hidden">
+      <div class="panel">
+        <div class="panel-title">FREE SPINS COMPLETE</div>
+        <div class="panel-sub">TOTAL WIN</div>
+        <div class="panel-big gold" id="fs-total">Rs0.00</div>
+        <button class="gold-btn" id="fs-collect">COLLECT</button>
+      </div>
+    </div>
+
+    <div id="buy-dialog" class="overlay hidden">
+      <div class="panel">
+        <div class="panel-title">FEATURE BUY</div>
+        <div class="panel-sub">BUY 15 FREE SPINS FOR</div>
+        <div class="panel-big gold" id="buy-cost">Rs22,500.00</div>
+        <div class="row">
+          <button class="gold-btn ghost" id="buy-cancel">CANCEL</button>
+          <button class="gold-btn" id="buy-confirm">BUY</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="auto-dialog" class="overlay hidden">
+      <div class="panel">
+        <div class="panel-title">AUTOPLAY</div>
+        <div class="panel-sub">NUMBER OF SPINS</div>
+        <div class="row" id="auto-options">
+          <button class="gold-btn opt">10</button>
+          <button class="gold-btn opt">25</button>
+          <button class="gold-btn opt">50</button>
+          <button class="gold-btn opt">100</button>
+        </div>
+        <button class="gold-btn ghost" id="auto-cancel">CANCEL</button>
+      </div>
+    </div>
+
+    <div id="paytable" class="overlay hidden">
+      <div class="panel wide">
+        <div class="panel-title">PAYTABLE</div>
+        <div id="paytable-body"></div>
+        <button class="gold-btn" id="paytable-close">CLOSE</button>
+      </div>
+    </div>
+
+    <div id="toast" class="hidden"></div>
+  </div>
+</div>
+<script src="js/audio.js"></script>
+<script src="js/symbols.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
