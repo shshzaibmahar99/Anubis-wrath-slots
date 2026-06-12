@@ -149,6 +149,18 @@
     });
   }
 
+  /* On narrow screens crop the root system to its centre so the main root
+     runs the full height of the stacked cards instead of shrinking to fit */
+  var fitRoots = function () {
+    if (!rootsSvg) return;
+    rootsSvg.setAttribute(
+      "preserveAspectRatio",
+      window.innerWidth < 880 ? "xMidYMin slice" : "xMidYMin meet"
+    );
+  };
+  fitRoots();
+  window.addEventListener("resize", fitRoots);
+
   var clamp01 = function (v) { return Math.max(0, Math.min(1, v)); };
 
   /* progress of an element travelling up through the viewport */
@@ -174,7 +186,7 @@
       if (rootPaths.length) {
         var rp = viewProgress(rootsSvg, 60);
         rootPaths.forEach(function (p, i) {
-          var pp = clamp01(rp * 1.45 - i * 0.07);
+          var pp = clamp01(rp * 1.8 - i * 0.06);
           p.style.strokeDashoffset = rootLens[i] * (1 - pp);
         });
       }
