@@ -95,7 +95,7 @@ const el = {
   buyDlg: $('#buy-dialog'), buyCost: $('#buy-cost'), buyOk: $('#buy-confirm'), buyNo: $('#buy-cancel'),
   autoDlg: $('#auto-dialog'), autoCancel: $('#auto-cancel'),
   paytable: $('#paytable'), paytableBody: $('#paytable-body'), paytableClose: $('#paytable-close'),
-  toast: $('#toast')
+  toast: $('#toast'), winPlate: $('#win-plate'), flash: $('#flash'), gameUi: $('#game-ui')
 };
 
 const fmt = n => 'Rs' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -231,6 +231,44 @@ const plaque = (() => {
   return c;
 })();
 
+/* ----- gold sparkles on the reel canvas ----- */
+const sparkles = [];
+function spawnSparkle(cx, cy, spread = 36, up = false) {
+  sparkles.push({
+    x: cx + rnd(-spread, spread), y: cy + rnd(-spread, spread),
+    vx: rnd(-0.5, 0.5), vy: up ? rnd(-2.2, -0.8) : rnd(-0.5, 0.4),
+    life: 1, decay: rnd(0.02, 0.05), r: rnd(2.2, 5.5), rot: rnd(0, 7), vr: rnd(-0.18, 0.18)
+  });
+}
+function drawSparkles() {
+  if (!sparkles.length) return;
+  rx.save();
+  rx.globalCompositeOperation = 'lighter';
+  for (let i = sparkles.length - 1; i >= 0; i--) {
+    const s = sparkles[i];
+    s.x += s.vx; s.y += s.vy; s.rot += s.vr; s.life -= s.decay;
+    if (s.life <= 0) { sparkles.splice(i, 1); continue; }
+    const r = s.r * s.life;
+    rx.save();
+    rx.translate(s.x, s.y);
+    rx.rotate(s.rot);
+    rx.globalAlpha = s.life;
+    const g = rx.createRadialGradient(0, 0, 0, 0, 0, r);
+    g.addColorStop(0, '#fff8dc'); g.addColorStop(0.5, '#ffd86b'); g.addColorStop(1, 'rgba(200,120,20,0)');
+    rx.fillStyle = g;
+    rx.beginPath();
+    // four-point star
+    rx.moveTo(0, -r * 2);
+    rx.quadraticCurveTo(r * 0.3, -r * 0.3, r * 2, 0);
+    rx.quadraticCurveTo(r * 0.3, r * 0.3, 0, r * 2);
+    rx.quadraticCurveTo(-r * 0.3, r * 0.3, -r * 2, 0);
+    rx.quadraticCurveTo(-r * 0.3, -r * 0.3, 0, -r * 2);
+    rx.fill();
+    rx.restore();
+  }
+  rx.restore();
+}
+
 /* ----- reels ----- */
 const reels = [];
 function initReels() {
@@ -298,7 +336,11 @@ function drawReels(now) {
         speed = R.travel * (easeTravel(Math.min(1, p + 0.01)) - easeTravel(p)) / 0.01 / R.dur * 16;
       } else if (t < R.dur + 240) {
         // bounce settle
-        if (!R.landed) { R.landed = true; SND.reelStop(c); R.strip4 = null; }
+        if (!R.landed) {
+          R.landed = true; SND.reelStop(c);
+          for (let k = 0; k < 6; k++)
+            spawnSparkle(c * CELL + CELL / 2, REEL_H - 16, 56, true);
+        }
         const q = (t - R.dur) / 240;
         o = R.travel + Math.sin(q * Math.PI) * 0.22 * (1 - q);
       } else {
@@ -341,6 +383,8 @@ function drawReels(now) {
         if (dim && !isWin) rx.globalAlpha = 0.32;
         let dx = c * CELL + 4, dy = r * CELL + 4, dw = CELL - 8;
         if (isWin && dim) {
+          if (Math.random() < 0.06)
+            spawnSparkle(c * CELL + CELL / 2, r * CELL + CELL / 2, 44);
           const s = 1 + 0.07 * Math.sin(now / 140);
           const grow = (dw * s - dw) / 2;
           dx -= grow; dy -= grow; dw *= s;
@@ -377,6 +421,25 @@ function drawReels(now) {
   sh.addColorStop(1, 'rgba(0,0,10,.5)');
   rx.fillStyle = sh;
   rx.fillRect(0, 0, REEL_W, REEL_H);
+
+  // periodic gloss sweep across the symbols
+  if (allStopped && !dim) {
+    const sw = (now % 7000) / 7000;
+    if (sw < 0.22) {
+      const t = sw / 0.22;
+      const sx = -260 + (REEL_W + 520) * t;
+      rx.save();
+      rx.globalCompositeOperation = 'lighter';
+      const lg = rx.createLinearGradient(sx, 0, sx + 260, REEL_H * 0.5);
+      lg.addColorStop(0, 'rgba(255,240,190,0)');
+      lg.addColorStop(0.5, 'rgba(255,240,190,.09)');
+      lg.addColorStop(1, 'rgba(255,240,190,0)');
+      rx.fillStyle = lg;
+      rx.fillRect(0, 0, REEL_W, REEL_H);
+      rx.restore();
+    }
+  }
+  drawSparkles();
 }
 
 /* ----- multiplier strip ----- */
@@ -892,6 +955,18 @@ function toast(msg, ms = 2200) {
 
 function turboT(ms) { return state.turbo ? ms * 0.4 : ms; }
 
+function shakeFx() {
+  [el.bg, el.gameUi].forEach(n => {
+    n.classList.remove('shake'); void n.offsetWidth;
+    n.classList.add('shake');
+    setTimeout(() => n.classList.remove('shake'), 620);
+  });
+}
+function flashFx() {
+  el.flash.classList.remove('go'); void el.flash.offsetWidth;
+  el.flash.classList.add('go');
+}
+
 async function doSpin({ free = false } = {}) {
   if (state.spinning) return;
 
@@ -977,7 +1052,8 @@ async function presentWin(result) {
   SND.win(level);
   burstCoins(Math.min(60, 6 + Math.round(result.total / bet() * 4)));
 
-  // count-up
+  // count-up with floating win plate over the reels
+  el.winPlate.classList.remove('hidden');
   const dur = turboT(result.total >= bet() * 3 ? 1500 : 900);
   const t0 = performance.now();
   let lastCoin = 0;
@@ -985,12 +1061,14 @@ async function presentWin(result) {
     function step(now) {
       const p = Math.min(1, (now - t0) / dur);
       setWin(result.total * p);
+      el.winPlate.textContent = 'WIN ' + fmt(result.total * p);
       if (now - lastCoin > 90) { SND.coin(); lastCoin = now; }
       if (p < 1) requestAnimationFrame(step); else resolve();
     }
     requestAnimationFrame(step);
   });
   setWin(result.total);
+  el.winPlate.textContent = 'WIN ' + fmt(result.total);
 
   if (state.inFree) state.fsTotal += result.total;
   setBalance(state.balance + result.total);
@@ -1002,6 +1080,8 @@ async function presentWin(result) {
     el.bigwinAmount.textContent = fmt(0);
     el.bigwin.classList.remove('hidden');
     SND.bigwin();
+    shakeFx();
+    flashFx();
     burstCoins(80);
     const bw0 = performance.now(), bwDur = 2600;
     let skipped = false;
@@ -1021,6 +1101,7 @@ async function presentWin(result) {
   } else {
     await sleep(turboT(1100));
   }
+  el.winPlate.classList.add('hidden');
   state.winCells.clear();
 }
 
@@ -1033,12 +1114,16 @@ async function round({ free = false } = {}) {
   if (result.freeSpins > 0) {
     if (!state.inFree) {
       SND.fsTrigger();
+      flashFx();
+      shakeFx();
+      await sleep(450);
       await startFreeSpins(result.freeSpins);
     } else {
       state.freeSpins += 5;
       el.fsLeft.textContent = state.freeSpins;
       toast('+5 FREE SPINS!');
       SND.fsTrigger();
+      flashFx();
       await sleep(1000);
     }
   }
