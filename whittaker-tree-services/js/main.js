@@ -1,8 +1,26 @@
-/* Louis Whittaker Tree Services — landing page interactions */
+/* Louis Whittaker Tree Services : landing page interactions */
 (function () {
   "use strict";
 
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  /* ---- Preloader ---- */
+  var preloader = document.getElementById("preloader");
+  if (preloader) {
+    var hidePreloader = function () {
+      preloader.classList.add("is-done");
+      document.body.classList.remove("is-loading");
+      setTimeout(function () { preloader.remove(); }, 650);
+    };
+    var minDelay = new Promise(function (r) { setTimeout(r, prefersReducedMotion ? 150 : 950); });
+    var pageLoaded = new Promise(function (r) {
+      if (document.readyState === "complete") r();
+      else window.addEventListener("load", r, { once: true });
+    });
+    var maxDelay = new Promise(function (r) { setTimeout(r, 2600); });
+    Promise.race([Promise.all([minDelay, pageLoaded]), maxDelay]).then(hidePreloader);
+  }
 
   /* ---- Mobile navigation ---- */
   var navToggle = document.getElementById("navToggle");
@@ -63,6 +81,57 @@
     revealEls.forEach(function (el) { revealObserver.observe(el); });
   }
 
+  /* ---- Scroll-stacked service cards: scale back as the next card covers ---- */
+  var stackCards = Array.prototype.slice.call(document.querySelectorAll(".stack__card"));
+  if (stackCards.length && !prefersReducedMotion) {
+    var stackTicking = false;
+    var updateStack = function () {
+      stackTicking = false;
+      for (var i = 0; i < stackCards.length - 1; i++) {
+        var card = stackCards[i];
+        var rect = card.getBoundingClientRect();
+        var nextRect = stackCards[i + 1].getBoundingClientRect();
+        var p = (rect.bottom - nextRect.top + 26) / (rect.height + 26);
+        p = Math.max(0, Math.min(1, p));
+        if (p > 0) {
+          card.style.transform = "scale(" + (1 - p * 0.055) + ") translateY(" + (p * -6) + "px)";
+          card.style.filter = "brightness(" + (1 - p * 0.07) + ")";
+        } else {
+          card.style.transform = "";
+          card.style.filter = "";
+        }
+      }
+    };
+    var requestStack = function () {
+      if (!stackTicking) {
+        stackTicking = true;
+        requestAnimationFrame(updateStack);
+      }
+    };
+    window.addEventListener("scroll", requestStack, { passive: true });
+    window.addEventListener("resize", requestStack);
+    requestStack();
+  }
+
+  /* ---- 3D tilt on hover (pointer devices only) ---- */
+  if (finePointer && !prefersReducedMotion) {
+    document.querySelectorAll(".tilt").forEach(function (el) {
+      el.addEventListener("pointermove", function (e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform =
+          "perspective(900px) rotateX(" + (py * -5).toFixed(2) + "deg) rotateY(" +
+          (px * 6).toFixed(2) + "deg) translateY(-4px)";
+        el.style.transition = "transform 0.08s linear";
+      });
+      el.addEventListener("pointerleave", function () {
+        el.style.transition = "transform 0.4s ease";
+        el.style.transform = "";
+      });
+    });
+  }
+
   /* ---- Animated stat counters ---- */
   function animateCount(el) {
     var target = parseFloat(el.dataset.count);
@@ -98,6 +167,122 @@
     statEls.forEach(function (el) { statObserver.observe(el); });
   } else {
     statEls.forEach(animateCount);
+  }
+
+  /* ---- Reviews slider: snap scroll, arrows, dots, drag, autoplay ---- */
+  var track = document.getElementById("reviewTrack");
+  if (track) {
+    var slides = Array.prototype.slice.call(track.children);
+    var prevBtn = document.getElementById("revPrev");
+    var nextBtn = document.getElementById("revNext");
+    var dotsBox = document.getElementById("revDots");
+    var autoTimer = null;
+
+    var slideStep = function () {
+      if (slides.length < 2) return track.clientWidth;
+      return slides[1].offsetLeft - slides[0].offsetLeft;
+    };
+    var maxScroll = function () { return track.scrollWidth - track.clientWidth; };
+    var currentIndex = function () {
+      return Math.min(slides.length - 1, Math.round(track.scrollLeft / slideStep()));
+    };
+
+    slides.forEach(function (_, i) {
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.setAttribute("aria-label", "Go to review " + (i + 1));
+      dot.addEventListener("click", function () {
+        track.scrollTo({ left: i * slideStep(), behavior: prefersReducedMotion ? "auto" : "smooth" });
+        restartAuto();
+      });
+      dotsBox.appendChild(dot);
+    });
+    var dots = Array.prototype.slice.call(dotsBox.children);
+
+    var syncUI = function () {
+      var idx = currentIndex();
+      dots.forEach(function (d, i) { d.classList.toggle("is-active", i === idx); });
+      prevBtn.disabled = track.scrollLeft <= 4;
+      nextBtn.disabled = track.scrollLeft >= maxScroll() - 4;
+    };
+
+    var go = function (dir) {
+      var target = (currentIndex() + dir) * slideStep();
+      track.scrollTo({ left: target, behavior: prefersReducedMotion ? "auto" : "smooth" });
+    };
+
+    prevBtn.addEventListener("click", function () { go(-1); restartAuto(); });
+    nextBtn.addEventListener("click", function () { go(1); restartAuto(); });
+
+    var scrollTicking = false;
+    track.addEventListener("scroll", function () {
+      if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(function () { scrollTicking = false; syncUI(); });
+      }
+    }, { passive: true });
+
+    /* Drag to scroll with the mouse (touch scrolls natively) */
+    if (finePointer) {
+      var dragging = false, startX = 0, startScroll = 0, moved = false;
+      track.addEventListener("pointerdown", function (e) {
+        if (e.pointerType !== "mouse") return;
+        dragging = true; moved = false;
+        startX = e.clientX;
+        startScroll = track.scrollLeft;
+        track.classList.add("is-dragging");
+        track.setPointerCapture(e.pointerId);
+      });
+      track.addEventListener("pointermove", function (e) {
+        if (!dragging) return;
+        var dx = e.clientX - startX;
+        if (Math.abs(dx) > 4) moved = true;
+        track.scrollLeft = startScroll - dx;
+      });
+      var endDrag = function (e) {
+        if (!dragging) return;
+        dragging = false;
+        track.classList.remove("is-dragging");
+        if (moved) {
+          track.scrollTo({ left: currentIndex() * slideStep(), behavior: "smooth" });
+          restartAuto();
+        }
+      };
+      track.addEventListener("pointerup", endDrag);
+      track.addEventListener("pointercancel", endDrag);
+    }
+
+    /* Gentle autoplay, paused on interaction and when off screen */
+    var startAuto = function () {
+      if (prefersReducedMotion || autoTimer) return;
+      autoTimer = setInterval(function () {
+        if (track.scrollLeft >= maxScroll() - 4) {
+          track.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          go(1);
+        }
+      }, 4800);
+    };
+    var stopAuto = function () {
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    };
+    var restartAuto = function () { stopAuto(); startAuto(); };
+
+    track.addEventListener("pointerenter", stopAuto);
+    track.addEventListener("pointerleave", startAuto);
+    track.addEventListener("touchstart", stopAuto, { passive: true });
+    track.addEventListener("touchend", startAuto, { passive: true });
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) startAuto(); else stopAuto();
+      }, { threshold: 0.3 }).observe(track);
+    } else {
+      startAuto();
+    }
+
+    syncUI();
+    window.addEventListener("resize", syncUI);
   }
 
   /* ---- Quote form (demo: client-side confirmation only) ---- */
