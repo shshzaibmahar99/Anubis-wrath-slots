@@ -8,9 +8,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="preload" as="image" href="assets/logo.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/logo-small.webp" fetchpriority="high" />
+  <link rel="icon" type="image/png" href="assets/logo-small.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="is-loading">
@@ -18,20 +20,34 @@
   <!-- ===== Preloader ===== -->
   <div class="preloader" id="preloader" aria-hidden="true">
     <div class="preloader__inner">
-      <img src="assets/logo.png" alt="" class="preloader__logo" />
+      <img src="assets/logo.webp" alt="" class="preloader__logo" width="290" height="360" />
       <span class="preloader__name">Louis Whittaker</span>
       <span class="preloader__tag">Tree Services LTD</span>
       <span class="preloader__bar"><span></span></span>
     </div>
   </div>
 
-  <!-- ===== Announcement bar ===== -->
+  <!-- ===== Announcement ticker ===== -->
   <div class="topbar">
     <div class="container topbar__inner">
-      <p class="topbar__locations">
-        <svg viewBox="0 0 24 24" class="ic"><path d="M12 21s-7-5.7-7-11a7 7 0 1 1 14 0c0 5.3-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
-        Serving Hampshire from <strong>3 local branches:</strong> Southampton, Winchester and Portsmouth
-      </p>
+      <div class="ticker" id="ticker" aria-live="off">
+        <p class="ticker__item is-active">
+          <svg viewBox="0 0 24 24" class="ic"><path d="M12 21s-7-5.7-7-11a7 7 0 1 1 14 0c0 5.3-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
+          Serving Hampshire from <strong>3 local branches:</strong> Southampton, Winchester and Portsmouth
+        </p>
+        <p class="ticker__item">
+          <span class="ticker__stars" aria-hidden="true">★★★★★</span>
+          Rated <strong>5.0 on Google</strong> by homeowners across the south coast
+        </p>
+        <p class="ticker__item">
+          <svg viewBox="0 0 24 24" class="ic"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L15.6 9.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Fully insured, certified arborists. <strong>Free quotes</strong> within 48 hours
+        </p>
+        <p class="ticker__item">
+          <svg viewBox="0 0 24 24" class="ic"><path d="M13 2L5 13h6l-1 9 9-12h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          <strong>24/7 emergency</strong> storm damage response across Hampshire
+        </p>
+      </div>
       <a href="tel:07751095752" class="topbar__phone">
         <svg viewBox="0 0 24 24" class="ic"><path d="M6.6 3h3l1.5 4.2-2 1.5a13.5 13.5 0 0 0 6.2 6.2l1.5-2L21 14.4v3A2.6 2.6 0 0 1 18.4 20 16.4 16.4 0 0 1 4 5.6 2.6 2.6 0 0 1 6.6 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
         07751 095752
@@ -43,7 +59,7 @@
   <header class="header" id="header">
     <div class="container header__inner">
       <a href="#top" class="brand" aria-label="Louis Whittaker Tree Services, home">
-        <img src="assets/logo.png" alt="Louis Whittaker Tree Services logo" class="brand__mark" />
+        <img src="assets/logo-small.webp" alt="Louis Whittaker Tree Services logo" class="brand__mark" width="97" height="120" />
         <span class="brand__text">
           <span class="brand__name">Louis Whittaker</span>
           <span class="brand__tag">Tree Services LTD</span>
@@ -248,30 +264,30 @@
           </p>
         </div>
 
-        <div class="gallery">
-          <figure class="gallery__item gallery__item--wide reveal">
+        <div class="gallery" id="gallery">
+          <figure class="gallery__item gallery__item--wide reveal reveal--zoom" style="--d:.0s">
             <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80"
-                 alt="Sunlight breaking through a well-managed woodland canopy" loading="lazy"
+                 alt="Sunlight breaking through a well-managed woodland canopy" loading="lazy" data-parallax
                  onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
-            <figcaption>Woodland management near the New Forest</figcaption>
+            <figcaption><span>Woodland management near the New Forest</span></figcaption>
           </figure>
-          <figure class="gallery__item reveal">
+          <figure class="gallery__item reveal reveal--zoom" style="--d:.12s">
             <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80"
-                 alt="Sunlight through the leaves of a freshly pruned tree" loading="lazy"
+                 alt="Sunlight through the leaves of a freshly pruned tree" loading="lazy" data-parallax
                  onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
-            <figcaption>Crown thinning in Netley</figcaption>
+            <figcaption><span>Crown thinning in Netley</span></figcaption>
           </figure>
-          <figure class="gallery__item reveal">
+          <figure class="gallery__item reveal reveal--zoom" style="--d:.08s">
             <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=800&q=80"
-                 alt="A tidy tree-lined avenue after maintenance" loading="lazy"
+                 alt="A tidy tree-lined avenue after maintenance" loading="lazy" data-parallax
                  onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
-            <figcaption>Avenue reduction in Winchester</figcaption>
+            <figcaption><span>Avenue reduction in Winchester</span></figcaption>
           </figure>
-          <figure class="gallery__item gallery__item--wide reveal">
+          <figure class="gallery__item gallery__item--wide reveal reveal--zoom" style="--d:.16s">
             <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1200&q=80"
-                 alt="A clear garden path beside neatly maintained trees and borders" loading="lazy"
+                 alt="A clear garden path beside neatly maintained trees and borders" loading="lazy" data-parallax
                  onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
-            <figcaption>Full garden clearance in Portsmouth</figcaption>
+            <figcaption><span>Full garden clearance in Portsmouth</span></figcaption>
           </figure>
         </div>
 
@@ -317,7 +333,18 @@
           </p>
         </div>
 
-        <div class="locations__grid">
+        <div class="locations__wrap">
+          <!-- Root system that draws itself behind the branch cards as you scroll -->
+          <svg class="roots" id="roots" viewBox="0 0 1120 700" fill="none" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+            <path d="M560 -10 C560 70 545 130 470 180 C360 250 250 280 215 380 C185 465 215 560 250 640" />
+            <path d="M560 -10 C560 90 575 170 555 270 C540 350 570 440 558 530 C552 590 565 650 558 700" />
+            <path d="M560 -10 C560 70 575 130 650 180 C760 250 870 280 905 380 C935 465 905 560 870 640" />
+            <path d="M470 180 C430 230 420 290 430 340" />
+            <path d="M650 180 C690 230 700 290 690 340" />
+            <path d="M215 380 C260 420 290 470 295 520" />
+            <path d="M905 380 C860 420 830 470 825 520" />
+          </svg>
+          <div class="locations__grid">
           <article class="location glass tilt location--hq reveal">
             <span class="location__flag">Head Office</span>
             <div class="location__pin" aria-hidden="true">
@@ -357,6 +384,7 @@
               <a href="#contact" class="location__link location__link--muted">Book a visit →</a>
             </div>
           </article>
+          </div>
         </div>
 
         <p class="locations__note reveal">
@@ -373,7 +401,7 @@
           <h2>From first call to final sweep up.</h2>
         </div>
 
-        <ol class="process">
+        <ol class="process" id="processTimeline">
           <li class="process__step reveal">
             <span class="process__num">1</span>
             <h3>Tell us about the job</h3>
@@ -409,9 +437,11 @@
             <p class="section__sub">Real feedback from gardens across all three branches.</p>
           </div>
           <div class="reviews__score glass">
+            <span class="reviews__score-g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
             <span class="reviews__score-num">5.0</span>
             <span class="reviews__score-stars" aria-hidden="true">★★★★★</span>
-            <a href="https://maps.app.goo.gl/NM9KCJrPzhyFc5sM8" target="_blank" rel="noopener">Rated on Google</a>
+            <span class="reviews__score-count">Based on 10 reviews</span>
+            <a href="https://maps.app.goo.gl/NM9KCJrPzhyFc5sM8" target="_blank" rel="noopener">See us on Google</a>
           </div>
         </div>
 
@@ -425,7 +455,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>M</span>';" />
                 <div><strong>Margaret H.</strong><span>Netley</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -436,7 +466,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>J</span>';" />
                 <div><strong>James T.</strong><span>Winchester</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -447,7 +477,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/men/52.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>D</span>';" />
                 <div><strong>David B.</strong><span>Hamble</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -458,7 +488,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>S</span>';" />
                 <div><strong>Sarah P.</strong><span>Fareham</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -469,7 +499,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/women/21.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>E</span>';" />
                 <div><strong>Emma R.</strong><span>Eastleigh</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -480,7 +510,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/men/76.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>P</span>';" />
                 <div><strong>Peter W.</strong><span>Portsmouth</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -491,7 +521,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>L</span>';" />
                 <div><strong>Lucy M.</strong><span>Romsey</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -502,7 +532,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>A</span>';" />
                 <div><strong>Alan G.</strong><span>Gosport</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -513,7 +543,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>R</span>';" />
                 <div><strong>Rachel S.</strong><span>Chandler's Ford</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -524,7 +554,7 @@
                 <img class="review__photo" src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"
                      onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>T</span>';" />
                 <div><strong>Tom K.</strong><span>Southampton</span></div>
-                <span class="review__g" aria-hidden="true">G</span>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
               </footer>
             </blockquote>
 
@@ -630,7 +660,7 @@
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__brand">
-        <img src="assets/logo.png" alt="Louis Whittaker Tree Services logo" class="footer__logo" />
+        <img src="assets/logo-small.webp" alt="Louis Whittaker Tree Services logo" class="footer__logo" width="97" height="120" />
         <p>Providing excellence in arboriculture<br />in the south of England.</p>
       </div>
       <nav class="footer__nav" aria-label="Footer">

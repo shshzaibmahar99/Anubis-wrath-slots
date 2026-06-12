@@ -22,6 +22,25 @@
     Promise.race([Promise.all([minDelay, pageLoaded]), maxDelay]).then(hidePreloader);
   }
 
+  /* ---- 3D announcement ticker ---- */
+  var ticker = document.getElementById("ticker");
+  if (ticker) {
+    var tickerItems = Array.prototype.slice.call(ticker.children);
+    if (tickerItems.length > 1 && !prefersReducedMotion) {
+      var tickerIdx = 0;
+      setInterval(function () {
+        var current = tickerItems[tickerIdx];
+        tickerIdx = (tickerIdx + 1) % tickerItems.length;
+        var next = tickerItems[tickerIdx];
+        current.classList.remove("is-active");
+        current.classList.add("is-leaving");
+        next.classList.remove("is-leaving");
+        next.classList.add("is-active");
+        setTimeout(function () { current.classList.remove("is-leaving"); }, 650);
+      }, 3400);
+    }
+  }
+
   /* ---- Mobile navigation ---- */
   var navToggle = document.getElementById("navToggle");
   var nav = document.getElementById("nav");
@@ -113,6 +132,75 @@
     requestStack();
   }
 
+  /* ---- Scroll-driven effects: gallery parallax, location roots, process timeline ---- */
+  var parallaxImgs = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
+  var rootsSvg = document.getElementById("roots");
+  var rootPaths = rootsSvg ? Array.prototype.slice.call(rootsSvg.querySelectorAll("path")) : [];
+  var rootLens = [];
+  var processEl = document.getElementById("processTimeline");
+  var processSteps = processEl ? Array.prototype.slice.call(processEl.querySelectorAll(".process__step")) : [];
+
+  if (rootPaths.length && !prefersReducedMotion) {
+    rootPaths.forEach(function (p) {
+      var len = p.getTotalLength();
+      rootLens.push(len);
+      p.style.strokeDasharray = len;
+      p.style.strokeDashoffset = len;
+    });
+  }
+
+  var clamp01 = function (v) { return Math.max(0, Math.min(1, v)); };
+
+  /* progress of an element travelling up through the viewport */
+  var viewProgress = function (el, lead) {
+    var rect = el.getBoundingClientRect();
+    var vh = window.innerHeight;
+    return clamp01((vh - rect.top - (lead || 0)) / (rect.height + vh * 0.35));
+  };
+
+  if (!prefersReducedMotion && (parallaxImgs.length || rootPaths.length || processEl)) {
+    var fxTicking = false;
+    var updateFX = function () {
+      fxTicking = false;
+      var vh = window.innerHeight;
+
+      parallaxImgs.forEach(function (img) {
+        var box = img.parentElement.getBoundingClientRect();
+        if (box.bottom < 0 || box.top > vh) return;
+        var center = (box.top + box.height / 2 - vh / 2) / vh;
+        img.style.setProperty("--py", (center * -22).toFixed(1) + "px");
+      });
+
+      if (rootPaths.length) {
+        var rp = viewProgress(rootsSvg, 60);
+        rootPaths.forEach(function (p, i) {
+          var pp = clamp01(rp * 1.45 - i * 0.07);
+          p.style.strokeDashoffset = rootLens[i] * (1 - pp);
+        });
+      }
+
+      if (processEl) {
+        var tp = viewProgress(processEl, 120);
+        processEl.style.setProperty("--p", tp.toFixed(3));
+        processSteps.forEach(function (step, i) {
+          step.classList.toggle("is-active", tp >= (i + 0.55) / processSteps.length);
+        });
+      }
+    };
+    var requestFX = function () {
+      if (!fxTicking) {
+        fxTicking = true;
+        requestAnimationFrame(updateFX);
+      }
+    };
+    window.addEventListener("scroll", requestFX, { passive: true });
+    window.addEventListener("resize", requestFX);
+    requestFX();
+  } else if (processEl) {
+    processEl.style.setProperty("--p", "1");
+    processSteps.forEach(function (s) { s.classList.add("is-active"); });
+  }
+
   /* ---- 3D tilt on hover (pointer devices only) ---- */
   if (finePointer && !prefersReducedMotion) {
     document.querySelectorAll(".tilt").forEach(function (el) {
@@ -136,7 +224,7 @@
   function animateCount(el) {
     var target = parseFloat(el.dataset.count);
     var suffix = el.dataset.suffix || "";
-    var duration = 1400;
+    var duration = 2300;
     var start = null;
 
     function frame(ts) {
@@ -163,7 +251,7 @@
           statObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.6 });
+    }, { threshold: 0.35 });
     statEls.forEach(function (el) { statObserver.observe(el); });
   } else {
     statEls.forEach(animateCount);
