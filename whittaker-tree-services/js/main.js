@@ -22,6 +22,109 @@
     Promise.race([Promise.all([minDelay, pageLoaded]), maxDelay]).then(hidePreloader);
   }
 
+  /* ---- Hero falling-leaves canvas (premium, dependency-free) ---- */
+  var leafCanvas = document.getElementById("heroLeaves");
+  if (leafCanvas && leafCanvas.getContext && !prefersReducedMotion) {
+    var lctx = leafCanvas.getContext("2d");
+    var heroEl = leafCanvas.parentElement;
+    var leaves = [];
+    var cw = 0, ch = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var leafColors = ["#4f9e6b", "#3c8254", "#6fb886", "#2f6b46", "#b8862e"];
+    var running = false, rafId = null;
+
+    var resizeLeaves = function () {
+      cw = heroEl.clientWidth;
+      ch = heroEl.clientHeight;
+      leafCanvas.width = cw * dpr;
+      leafCanvas.height = ch * dpr;
+      lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var target = window.innerWidth < 760 ? 9 : 16;
+      while (leaves.length < target) leaves.push(makeLeaf(true));
+      leaves.length = target;
+    };
+
+    function makeLeaf(initial) {
+      var size = 7 + Math.random() * 11;
+      return {
+        x: Math.random() * cw,
+        y: initial ? Math.random() * ch : -20,
+        size: size,
+        speed: 0.25 + Math.random() * 0.55,
+        sway: 0.6 + Math.random() * 1.1,
+        swayPhase: Math.random() * Math.PI * 2,
+        swaySpeed: 0.008 + Math.random() * 0.014,
+        rot: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.02,
+        color: leafColors[(Math.random() * leafColors.length) | 0],
+        alpha: 0.28 + Math.random() * 0.4
+      };
+    }
+
+    function drawLeaf(l) {
+      lctx.save();
+      lctx.translate(l.x, l.y);
+      lctx.rotate(l.rot);
+      lctx.globalAlpha = l.alpha;
+      lctx.fillStyle = l.color;
+      lctx.beginPath();
+      lctx.moveTo(0, -l.size);
+      lctx.bezierCurveTo(l.size * 0.7, -l.size * 0.5, l.size * 0.7, l.size * 0.5, 0, l.size);
+      lctx.bezierCurveTo(-l.size * 0.7, l.size * 0.5, -l.size * 0.7, -l.size * 0.5, 0, -l.size);
+      lctx.fill();
+      lctx.strokeStyle = "rgba(20,56,38,0.35)";
+      lctx.lineWidth = 0.8;
+      lctx.beginPath();
+      lctx.moveTo(0, -l.size);
+      lctx.lineTo(0, l.size);
+      lctx.stroke();
+      lctx.restore();
+    }
+
+    var tick = function () {
+      lctx.clearRect(0, 0, cw, ch);
+      for (var i = 0; i < leaves.length; i++) {
+        var l = leaves[i];
+        l.swayPhase += l.swaySpeed;
+        l.x += Math.sin(l.swayPhase) * l.sway * 0.5;
+        l.y += l.speed;
+        l.rot += l.rotSpeed;
+        if (l.y - l.size > ch) { leaves[i] = makeLeaf(false); leaves[i].x = Math.random() * cw; }
+        drawLeaf(l);
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+
+    var startLeaves = function () { if (!running) { running = true; tick(); } };
+    var stopLeaves = function () { running = false; if (rafId) cancelAnimationFrame(rafId); };
+
+    resizeLeaves();
+    window.addEventListener("resize", resizeLeaves);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stopLeaves(); else startLeaves();
+    });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (e) {
+        if (e[0].isIntersecting) startLeaves(); else stopLeaves();
+      }, { threshold: 0 }).observe(heroEl);
+    } else {
+      startLeaves();
+    }
+  }
+
+  /* ---- Magnetic buttons (fine pointers only) ---- */
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !prefersReducedMotion) {
+    document.querySelectorAll(".magnetic").forEach(function (el) {
+      var strength = 0.32;
+      el.addEventListener("pointermove", function (e) {
+        var r = el.getBoundingClientRect();
+        var mx = e.clientX - r.left - r.width / 2;
+        var my = e.clientY - r.top - r.height / 2;
+        el.style.transform = "translate(" + (mx * strength).toFixed(1) + "px," + (my * strength).toFixed(1) + "px)";
+      });
+      el.addEventListener("pointerleave", function () { el.style.transform = ""; });
+    });
+  }
+
   /* ---- Continuous marquee ticker: clone the set for a seamless loop ---- */
   var tickerTrack = document.getElementById("tickerTrack");
   if (tickerTrack) {
