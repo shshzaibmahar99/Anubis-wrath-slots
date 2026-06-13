@@ -22,66 +22,70 @@
     Promise.race([Promise.all([minDelay, pageLoaded]), maxDelay]).then(hidePreloader);
   }
 
-  /* ---- Hero falling-leaves canvas (premium, dependency-free) ---- */
-  var leafCanvas = document.getElementById("heroLeaves");
-  if (leafCanvas && leafCanvas.getContext && !prefersReducedMotion) {
-    var lctx = leafCanvas.getContext("2d");
-    var heroEl = leafCanvas.parentElement;
+  /* ---- Falling-leaves canvas (premium, dependency-free, reused hero + footer) ---- */
+  function createLeafField(canvas, opts) {
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    var host = canvas.parentElement;
+    var colors = opts.colors;
+    var vein = opts.vein;
+    var baseAlpha = opts.baseAlpha;
+    var density = opts.density;
     var leaves = [];
     var cw = 0, ch = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var leafColors = ["#4f9e6b", "#3c8254", "#6fb886", "#2f6b46", "#b8862e"];
     var running = false, rafId = null;
 
-    var resizeLeaves = function () {
-      cw = heroEl.clientWidth;
-      ch = heroEl.clientHeight;
-      leafCanvas.width = cw * dpr;
-      leafCanvas.height = ch * dpr;
-      lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var target = window.innerWidth < 760 ? 9 : 16;
-      while (leaves.length < target) leaves.push(makeLeaf(true));
-      leaves.length = target;
-    };
-
     function makeLeaf(initial) {
-      var size = 7 + Math.random() * 11;
+      var size = 6 + Math.random() * 11;
       return {
         x: Math.random() * cw,
         y: initial ? Math.random() * ch : -20,
         size: size,
-        speed: 0.25 + Math.random() * 0.55,
+        speed: 0.22 + Math.random() * 0.5,
         sway: 0.6 + Math.random() * 1.1,
         swayPhase: Math.random() * Math.PI * 2,
         swaySpeed: 0.008 + Math.random() * 0.014,
         rot: Math.random() * Math.PI * 2,
         rotSpeed: (Math.random() - 0.5) * 0.02,
-        color: leafColors[(Math.random() * leafColors.length) | 0],
-        alpha: 0.28 + Math.random() * 0.4
+        color: colors[(Math.random() * colors.length) | 0],
+        alpha: baseAlpha + Math.random() * 0.32
       };
     }
 
-    function drawLeaf(l) {
-      lctx.save();
-      lctx.translate(l.x, l.y);
-      lctx.rotate(l.rot);
-      lctx.globalAlpha = l.alpha;
-      lctx.fillStyle = l.color;
-      lctx.beginPath();
-      lctx.moveTo(0, -l.size);
-      lctx.bezierCurveTo(l.size * 0.7, -l.size * 0.5, l.size * 0.7, l.size * 0.5, 0, l.size);
-      lctx.bezierCurveTo(-l.size * 0.7, l.size * 0.5, -l.size * 0.7, -l.size * 0.5, 0, -l.size);
-      lctx.fill();
-      lctx.strokeStyle = "rgba(20,56,38,0.35)";
-      lctx.lineWidth = 0.8;
-      lctx.beginPath();
-      lctx.moveTo(0, -l.size);
-      lctx.lineTo(0, l.size);
-      lctx.stroke();
-      lctx.restore();
+    function resize() {
+      cw = host.clientWidth;
+      ch = host.clientHeight;
+      if (!cw || !ch) return;
+      canvas.width = cw * dpr;
+      canvas.height = ch * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var target = Math.round((window.innerWidth < 760 ? density * 0.55 : density));
+      while (leaves.length < target) leaves.push(makeLeaf(true));
+      leaves.length = target;
     }
 
-    var tick = function () {
-      lctx.clearRect(0, 0, cw, ch);
+    function draw(l) {
+      ctx.save();
+      ctx.translate(l.x, l.y);
+      ctx.rotate(l.rot);
+      ctx.globalAlpha = l.alpha;
+      ctx.fillStyle = l.color;
+      ctx.beginPath();
+      ctx.moveTo(0, -l.size);
+      ctx.bezierCurveTo(l.size * 0.7, -l.size * 0.5, l.size * 0.7, l.size * 0.5, 0, l.size);
+      ctx.bezierCurveTo(-l.size * 0.7, l.size * 0.5, -l.size * 0.7, -l.size * 0.5, 0, -l.size);
+      ctx.fill();
+      ctx.strokeStyle = vein;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(0, -l.size);
+      ctx.lineTo(0, l.size);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, cw, ch);
       for (var i = 0; i < leaves.length; i++) {
         var l = leaves[i];
         l.swayPhase += l.swaySpeed;
@@ -89,26 +93,37 @@
         l.y += l.speed;
         l.rot += l.rotSpeed;
         if (l.y - l.size > ch) { leaves[i] = makeLeaf(false); leaves[i].x = Math.random() * cw; }
-        drawLeaf(l);
+        draw(l);
       }
       rafId = requestAnimationFrame(tick);
-    };
+    }
 
-    var startLeaves = function () { if (!running) { running = true; tick(); } };
-    var stopLeaves = function () { running = false; if (rafId) cancelAnimationFrame(rafId); };
+    var start = function () { if (!running) { running = true; tick(); } };
+    var stop = function () { running = false; if (rafId) cancelAnimationFrame(rafId); };
 
-    resizeLeaves();
-    window.addEventListener("resize", resizeLeaves);
+    resize();
+    window.addEventListener("resize", resize);
     document.addEventListener("visibilitychange", function () {
-      if (document.hidden) stopLeaves(); else startLeaves();
+      if (document.hidden) stop(); else start();
     });
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (e) {
-        if (e[0].isIntersecting) startLeaves(); else stopLeaves();
-      }, { threshold: 0 }).observe(heroEl);
+        if (e[0].isIntersecting) start(); else stop();
+      }, { threshold: 0 }).observe(host);
     } else {
-      startLeaves();
+      start();
     }
+  }
+
+  if (!prefersReducedMotion) {
+    createLeafField(document.getElementById("heroLeaves"), {
+      colors: ["#4f9e6b", "#3c8254", "#6fb886", "#2f6b46", "#b8862e"],
+      vein: "rgba(20,56,38,0.35)", baseAlpha: 0.28, density: 16
+    });
+    createLeafField(document.getElementById("footerLeaves"), {
+      colors: ["#6fb886", "#4f9e6b", "#9ad0ab", "#e9d9b8"],
+      vein: "rgba(255,255,255,0.25)", baseAlpha: 0.2, density: 14
+    });
   }
 
   /* ---- Magnetic buttons (fine pointers only) ---- */
