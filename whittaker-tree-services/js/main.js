@@ -22,22 +22,14 @@
     Promise.race([Promise.all([minDelay, pageLoaded]), maxDelay]).then(hidePreloader);
   }
 
-  /* ---- 3D announcement ticker ---- */
-  var ticker = document.getElementById("ticker");
-  if (ticker) {
-    var tickerItems = Array.prototype.slice.call(ticker.children);
-    if (tickerItems.length > 1 && !prefersReducedMotion) {
-      var tickerIdx = 0;
-      setInterval(function () {
-        var current = tickerItems[tickerIdx];
-        tickerIdx = (tickerIdx + 1) % tickerItems.length;
-        var next = tickerItems[tickerIdx];
-        current.classList.remove("is-active");
-        current.classList.add("is-leaving");
-        next.classList.remove("is-leaving");
-        next.classList.add("is-active");
-        setTimeout(function () { current.classList.remove("is-leaving"); }, 650);
-      }, 3400);
+  /* ---- Continuous marquee ticker: clone the set for a seamless loop ---- */
+  var tickerTrack = document.getElementById("tickerTrack");
+  if (tickerTrack) {
+    var firstSet = tickerTrack.querySelector(".ticker__set");
+    if (firstSet) {
+      var clone = firstSet.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      tickerTrack.appendChild(clone);
     }
   }
 
@@ -132,45 +124,42 @@
     requestStack();
   }
 
-  /* ---- Scroll-driven effects: gallery parallax, location roots, process timeline ---- */
+  /* ---- Scroll-driven effects: gallery parallax, growing vine, process timeline ---- */
   var parallaxImgs = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
-  var rootsSvg = document.getElementById("roots");
-  var rootPaths = rootsSvg ? Array.prototype.slice.call(rootsSvg.querySelectorAll("path")) : [];
-  var rootLens = [];
+  var rootsWrap = document.querySelector(".locations__wrap");
   var processEl = document.getElementById("processTimeline");
   var processSteps = processEl ? Array.prototype.slice.call(processEl.querySelectorAll(".process__step")) : [];
 
-  if (rootPaths.length && !prefersReducedMotion) {
-    rootPaths.forEach(function (p) {
-      var len = p.getTotalLength();
-      rootLens.push(len);
-      p.style.strokeDasharray = len;
-      p.style.strokeDashoffset = len;
-    });
-  }
-
-  /* On narrow screens crop the root system to its centre so the main root
-     runs the full height of the stacked cards instead of shrinking to fit */
-  var fitRoots = function () {
-    if (!rootsSvg) return;
-    rootsSvg.setAttribute(
-      "preserveAspectRatio",
-      window.innerWidth < 880 ? "xMidYMin slice" : "xMidYMin meet"
-    );
-  };
-  fitRoots();
-  window.addEventListener("resize", fitRoots);
-
   var clamp01 = function (v) { return Math.max(0, Math.min(1, v)); };
+
+  /* The vine + its leaves, for each (mobile / desktop) variant */
+  var vines = Array.prototype.slice.call(document.querySelectorAll(".roots")).map(function (svg) {
+    var leaves = Array.prototype.slice.call(svg.querySelectorAll(".leaf")).map(function (g) {
+      var inner = g.querySelector(".leaf__s") || g;
+      if (!prefersReducedMotion) inner.setAttribute("transform", "scale(0)");
+      return { el: inner, p: parseFloat(g.getAttribute("data-p")) || 0 };
+    });
+    return { svg: svg, vine: svg.querySelector(".vine"), leaves: leaves, len: 0 };
+  });
+
+  var isShown = function (el) { return el.getClientRects().length > 0; };
 
   /* progress of an element travelling up through the viewport */
   var viewProgress = function (el, lead) {
     var rect = el.getBoundingClientRect();
     var vh = window.innerHeight;
-    return clamp01((vh - rect.top - (lead || 0)) / (rect.height + vh * 0.35));
+    return clamp01((vh - rect.top - (lead || 0)) / (rect.height + vh * 0.3));
   };
 
-  if (!prefersReducedMotion && (parallaxImgs.length || rootPaths.length || processEl)) {
+  if (prefersReducedMotion) {
+    vines.forEach(function (v) {
+      v.leaves.forEach(function (lf) { lf.el.setAttribute("transform", "scale(1.35)"); });
+      var rv = v.vine;
+      if (rv) rv.style.strokeDashoffset = 0;
+    });
+  }
+
+  if (!prefersReducedMotion && (parallaxImgs.length || vines.length || processEl)) {
     var fxTicking = false;
     var updateFX = function () {
       fxTicking = false;
@@ -183,11 +172,21 @@
         img.style.setProperty("--py", (center * -22).toFixed(1) + "px");
       });
 
-      if (rootPaths.length) {
-        var rp = viewProgress(rootsSvg, 60);
-        rootPaths.forEach(function (p, i) {
-          var pp = clamp01(rp * 1.8 - i * 0.06);
-          p.style.strokeDashoffset = rootLens[i] * (1 - pp);
+      if (rootsWrap && vines.length) {
+        var rp = viewProgress(rootsWrap, 40);
+        vines.forEach(function (v) {
+          if (!v.vine || !isShown(v.svg)) return;
+          if (!v.len) {
+            v.len = v.vine.getTotalLength();
+            v.vine.style.strokeDasharray = v.len;
+            v.vine.style.strokeDashoffset = v.len;
+          }
+          var vp = clamp01(rp * 1.12);
+          v.vine.style.strokeDashoffset = v.len * (1 - vp);
+          v.leaves.forEach(function (lf) {
+            var s = clamp01((rp - lf.p) * 6) * 1.35;
+            lf.el.setAttribute("transform", "scale(" + s.toFixed(3) + ")");
+          });
         });
       }
 

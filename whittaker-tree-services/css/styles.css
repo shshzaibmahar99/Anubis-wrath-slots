@@ -152,7 +152,10 @@ a { color: var(--pine); text-decoration: none; }
 }
 
 .preloader__logo {
-  width: clamp(110px, 22vw, 150px);
+  width: clamp(120px, 34vw, 168px);
+  height: auto;
+  aspect-ratio: 172 / 213;
+  object-fit: contain;
   filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.45));
   animation: preloader-float 2.4s ease-in-out infinite;
 }
@@ -260,49 +263,57 @@ a { color: var(--pine); text-decoration: none; }
   text-align: center;
 }
 
-/* 3D rotating ticker */
+/* Continuous 3D news-style marquee ticker */
 .ticker {
   position: relative;
   flex: 1;
   min-width: 0;
-  height: 24px;
-  perspective: 420px;
   overflow: hidden;
+  perspective: 900px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
+.ticker__track {
+  display: inline-flex;
+  width: max-content;
+  transform-style: preserve-3d;
+  transform: rotateX(8deg);
+  animation: ticker-scroll 34s linear infinite;
+}
+.ticker:hover .ticker__track { animation-play-state: paused; }
+.ticker__set { display: inline-flex; align-items: center; }
 .ticker__item {
-  position: absolute;
-  inset: 0;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 7px;
+  gap: 8px;
+  padding-inline: 22px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  opacity: 0;
-  transform: rotateX(-92deg) translateY(9px);
-  transform-origin: center top;
-  backface-visibility: hidden;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
-  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
-.ticker__item.is-active { opacity: 1; transform: rotateX(0) translateY(0); pointer-events: auto; }
-.ticker__item.is-leaving { opacity: 0; transform: rotateX(80deg) translateY(-9px); }
 .ticker__item strong { color: #fff; }
+.ticker__item .ic { color: var(--gold-soft); }
 .ticker__stars { color: var(--star); letter-spacing: 0.1em; font-size: 0.78rem; }
+.ticker__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(184, 134, 46, 0.8);
+  flex: none;
+}
+
+@keyframes ticker-scroll {
+  from { transform: rotateX(8deg) translate3d(0, 0, 0); }
+  to   { transform: rotateX(8deg) translate3d(-50%, 0, 0); }
+}
 
 @media (max-width: 759px) {
-  .ticker { height: 36px; }
-  .ticker__item {
-    display: block;
-    white-space: normal;
-    text-align: center;
-    line-height: 1.3;
-    font-size: 0.72rem;
-  }
-  .ticker__item.is-active { display: block; }
-  .ticker__item .ic, .ticker__item .ticker__stars { display: none; }
-  .topbar__inner { padding-block: 5px; }
+  .ticker__item { font-size: 0.74rem; padding-inline: 16px; }
+  .topbar__inner { padding-block: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track { animation: none; }
 }
 
 .topbar__phone {
@@ -346,8 +357,9 @@ a { color: var(--pine); text-decoration: none; }
 
 .brand { display: inline-flex; align-items: center; gap: 12px; }
 .brand__mark {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: auto;
+  aspect-ratio: 97 / 120;
   object-fit: contain;
   filter: drop-shadow(0 3px 6px rgba(21, 35, 29, 0.22));
 }
@@ -445,6 +457,8 @@ a { color: var(--pine); text-decoration: none; }
   display: inline-flex;
   align-items: center;
   gap: 9px;
+  white-space: nowrap;
+  max-width: 100%;
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -459,6 +473,21 @@ a { color: var(--pine); text-decoration: none; }
 }
 .kicker__stars { color: var(--star); letter-spacing: 0.1em; }
 .kicker .sep { margin: 0 2px; }
+
+@media (max-width: 430px) {
+  .kicker {
+    gap: 5px;
+    font-size: 0.56rem;
+    letter-spacing: 0.01em;
+    padding: 6px 11px;
+  }
+  .kicker__stars { font-size: 0.6rem; }
+  .kicker .sep { margin: 0 1px; }
+}
+@media (max-width: 374px) {
+  .kicker { font-size: 0.5rem; padding: 5px 9px; }
+  .kicker__stars { font-size: 0.54rem; }
+}
 
 .hero h1 em {
   font-style: italic;
@@ -815,18 +844,41 @@ a { color: var(--pine); text-decoration: none; }
 --------------------------------------------------------------------- */
 .locations__wrap { position: relative; }
 
-/* Root system drawn behind the branch cards on scroll */
+/* Living vine drawn behind the branch cards on scroll.
+   Starts just above the first card, ends at the last card. */
 .roots {
   position: absolute;
-  inset: -60px 0 -40px 0;
+  inset: -26px 0 0 0;
   width: 100%;
-  height: calc(100% + 100px);
+  height: calc(100% + 26px);
   pointer-events: none;
+  z-index: 0;
 }
-/* Earthy root tone; widths and opacities taper per path in the SVG */
-.roots path {
-  stroke: #6d5233;
-  stroke-linecap: round;
+.roots .vine {
+  fill: none;
+  filter: drop-shadow(0 1px 5px rgba(34, 89, 58, 0.55));
+}
+.roots--v .vine { stroke-width: 7; }
+.roots--h .vine { stroke-width: 6; }
+.roots .leaf__s {
+  will-change: transform;
+  filter: drop-shadow(0 2px 4px rgba(34, 89, 58, 0.45));
+}
+
+/* let the living vine read clearly through the branch cards */
+#locations .location.glass {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0.4));
+}
+#locations .location--hq.glass {
+  background: linear-gradient(160deg, rgba(255, 253, 245, 0.74), rgba(255, 255, 255, 0.46));
+}
+
+/* Vertical vine for stacked (mobile) cards, horizontal for desktop */
+.roots--v { display: none; }
+.roots--h { display: block; }
+@media (max-width: 879px) {
+  .roots--h { display: none; }
+  .roots--v { display: block; }
 }
 
 .locations__grid {
@@ -1318,7 +1370,8 @@ a { color: var(--pine); text-decoration: none; }
 }
 
 .footer__logo {
-  width: 88px;
+  width: 76px;
+  height: auto;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.4));
 }
 .footer__brand p { margin-top: 14px; max-width: 30ch; }
@@ -1394,8 +1447,7 @@ a { color: var(--pine); text-decoration: none; }
   .hero__badge, .preloader__logo, .section__blobs i { animation: none; }
   .stack__card { position: static; }
   .gallery__item img { transform: none; }
-  .ticker__item { transition: opacity 0.3s ease; transform: none; }
-  .roots path { stroke-dashoffset: 0 !important; }
+  .roots .vine { stroke-dashoffset: 0 !important; }
   .process { --p: 1; }
   .process__step .process__num { transition: none; }
 }
