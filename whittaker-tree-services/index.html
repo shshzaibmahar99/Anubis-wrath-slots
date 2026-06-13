@@ -14,7 +14,7 @@
   <link rel="preload" as="image" href="assets/logo-small.webp" fetchpriority="high" />
   <link rel="preload" as="image" href="assets/photo-hero.webp" />
   <link rel="icon" type="image/png" href="assets/logo-small.png" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.css?v=8" />
 </head>
 <body class="is-loading">
 
@@ -95,7 +95,7 @@
     <!-- ===== Hero ===== -->
     <section class="hero">
       <div class="hero__bg" aria-hidden="true"></div>
-      <canvas class="hero__leaves" id="heroLeaves" aria-hidden="true"></canvas>
+      <canvas class="hero__leaves" id="heroLeaves" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none"></canvas>
       <div class="container hero__inner">
         <div class="hero__copy reveal">
           <p class="kicker">
@@ -713,7 +713,7 @@
 
   <!-- ===== Footer ===== -->
   <footer class="footer">
-    <canvas class="footer__leaves" id="footerLeaves" aria-hidden="true"></canvas>
+    <canvas class="footer__leaves" id="footerLeaves" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none"></canvas>
     <div class="container footer__inner">
       <div class="footer__brand">
         <img src="assets/logo-small.webp" alt="Louis Whittaker Tree Services logo" class="footer__logo" width="97" height="120" />
@@ -745,6 +745,6 @@
     <a href="#contact" class="btn btn--primary">Free quote</a>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=8"></script>
 </body>
 </html>
