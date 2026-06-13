@@ -44,9 +44,10 @@ background professionally removed for use on the light theme.
 
 - **Winchester & Portsmouth branch details** — branch names/coverage areas are
   illustrative; confirm real addresses and phone numbers.
-- **Imagery** — Unsplash placeholders (with graceful gradient fallbacks if
-  offline); to be replaced with the client's own before/after photos from
-  Instagram ([@louiswhittakertreeservices](https://www.instagram.com/louiswhittakertreeservices)).
+- **Imagery** — hero and gallery now use bespoke AI-generated photography
+  (self-contained WebP in `assets/`, no external dependencies); to be replaced
+  with the client's own before/after photos from Instagram
+  ([@louiswhittakertreeservices](https://www.instagram.com/louiswhittakertreeservices)).
 - **Reviews** — the first and fourth quotes paraphrase real Google reviews; the
   rest, plus all names and profile photos (randomuser.me), are illustrative
   placeholders to be replaced with the client's real Google reviews.

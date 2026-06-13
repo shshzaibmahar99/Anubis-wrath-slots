@@ -12,6 +12,7 @@
 
   <link rel="preload" as="image" href="assets/logo.webp" fetchpriority="high" />
   <link rel="preload" as="image" href="assets/logo-small.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/photo-hero.webp" />
   <link rel="icon" type="image/png" href="assets/logo-small.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -131,8 +132,9 @@
 
         <div class="hero__media reveal reveal--delay">
           <figure class="hero__photo">
-            <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1100&q=80"
-                 alt="A beautifully maintained mature tree in full leaf"
+            <img src="assets/photo-hero.webp"
+                 alt="A magnificent mature oak tree in a beautifully maintained English country garden at golden hour"
+                 width="1120" height="836" fetchpriority="high"
                  onerror="this.closest('.hero__photo').classList.add('img-fallback'); this.remove();" />
           </figure>
           <div class="hero__badge hero__badge--rating">
@@ -274,26 +276,26 @@
 
         <div class="gallery" id="gallery">
           <figure class="gallery__item gallery__item--wide reveal reveal--zoom" style="--d:.0s">
-            <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80"
-                 alt="Sunlight breaking through a well-managed woodland canopy" loading="lazy" data-parallax
+            <img src="assets/work-woodland.webp"
+                 alt="Sunlight breaking through a well-managed woodland canopy" loading="lazy" data-parallax width="1200" height="670"
                  onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
             <figcaption><span>Woodland management near the New Forest</span></figcaption>
           </figure>
           <figure class="gallery__item reveal reveal--zoom" style="--d:.12s">
-            <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80"
-                 alt="Sunlight through the leaves of a freshly pruned tree" loading="lazy" data-parallax
+            <img src="assets/work-arborist.webp"
+                 alt="A certified arborist roped and harnessed high in a tree, carefully pruning" loading="lazy" data-parallax width="860" height="642"
                  onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
             <figcaption><span>Crown thinning in Netley</span></figcaption>
           </figure>
           <figure class="gallery__item reveal reveal--zoom" style="--d:.08s">
-            <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=800&q=80"
-                 alt="A tidy tree-lined avenue after maintenance" loading="lazy" data-parallax
+            <img src="assets/work-avenue.webp"
+                 alt="A tidy tree-lined country avenue after maintenance" loading="lazy" data-parallax width="860" height="642"
                  onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
             <figcaption><span>Avenue reduction in Winchester</span></figcaption>
           </figure>
           <figure class="gallery__item gallery__item--wide reveal reveal--zoom" style="--d:.16s">
-            <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1200&q=80"
-                 alt="A clear garden path beside neatly maintained trees and borders" loading="lazy" data-parallax
+            <img src="assets/work-garden.webp"
+                 alt="Immaculate maintained grounds with a healthy mature tree and tidy hedges" loading="lazy" data-parallax width="1200" height="675"
                  onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
             <figcaption><span>Full garden clearance in Portsmouth</span></figcaption>
           </figure>
