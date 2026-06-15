@@ -1,0 +1,36 @@
+# Serve this static demo directly and bypass any PHP app / Composer autoloader
+# inherited from the parent domain (which is what causes the 500 error).
+
+# Stop inherited mod_rewrite rules from routing requests to a parent index.php
+RewriteEngine Off
+
+# Use the static HTML as the directory index
+DirectoryIndex index.html
+
+# Disable any auto-prepended PHP (e.g. Composer autoload) for this folder
+<IfModule mod_php.c>
+  php_value auto_prepend_file none
+  php_value auto_append_file none
+</IfModule>
+<IfModule mod_php7.c>
+  php_value auto_prepend_file none
+  php_value auto_append_file none
+</IfModule>
+<IfModule mod_php8.c>
+  php_value auto_prepend_file none
+  php_value auto_append_file none
+</IfModule>
+<IfModule lsapi_module>
+  php_value auto_prepend_file none
+  php_value auto_append_file none
+</IfModule>
+
+# Make sure modern image/style/script types are served correctly
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType text/css .css
+  AddType application/javascript .js
+</IfModule>
+
+# Don't list directory contents
+Options -Indexes

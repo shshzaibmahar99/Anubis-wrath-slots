@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Louis Whittaker Tree Services LTD | Expert Tree Surgery Across the South of England</title>
+  <meta name="description" content="Professional tree surgery, hedge reduction, stump grinding and emergency tree work across Hampshire. Fully insured, 5.0 star Google rated, three local branches. Free quotes." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="preload" as="image" href="assets/logo.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/logo-small.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/photo-hero.webp" />
+  <link rel="icon" type="image/png" href="assets/logo-small.png" />
+  <link rel="stylesheet" href="css/styles.css?v=8" />
+</head>
+<body class="is-loading">
+
+  <!-- ===== Preloader ===== -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <img src="assets/logo.webp" alt="" class="preloader__logo" width="172" height="213" />
+      <span class="preloader__name">Louis Whittaker</span>
+      <span class="preloader__tag">Tree Services LTD</span>
+      <span class="preloader__bar"><span></span></span>
+    </div>
+  </div>
+
+  <!-- ===== Announcement ticker ===== -->
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="ticker" id="ticker" aria-label="Announcements">
+        <div class="ticker__track" id="tickerTrack">
+          <span class="ticker__set">
+            <span class="ticker__item">
+              <svg viewBox="0 0 24 24" class="ic"><path d="M12 21s-7-5.7-7-11a7 7 0 1 1 14 0c0 5.3-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
+              Serving Hampshire from <strong>3 local branches</strong> &mdash; Southampton, Winchester &amp; Portsmouth
+            </span>
+            <span class="ticker__dot" aria-hidden="true"></span>
+            <span class="ticker__item">
+              <span class="ticker__stars" aria-hidden="true">★★★★★</span>
+              Rated <strong>5.0 on Google</strong> by homeowners across the south coast
+            </span>
+            <span class="ticker__dot" aria-hidden="true"></span>
+            <span class="ticker__item">
+              <svg viewBox="0 0 24 24" class="ic"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L15.6 9.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Fully insured &amp; certified arborists &mdash; <strong>free quotes</strong> within 48 hours
+            </span>
+            <span class="ticker__dot" aria-hidden="true"></span>
+            <span class="ticker__item">
+              <svg viewBox="0 0 24 24" class="ic"><path d="M13 2L5 13h6l-1 9 9-12h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              <strong>24/7 emergency</strong> storm damage response across Hampshire
+            </span>
+            <span class="ticker__dot" aria-hidden="true"></span>
+          </span>
+        </div>
+      </div>
+      <a href="tel:07751095752" class="topbar__phone">
+        <svg viewBox="0 0 24 24" class="ic"><path d="M6.6 3h3l1.5 4.2-2 1.5a13.5 13.5 0 0 0 6.2 6.2l1.5-2L21 14.4v3A2.6 2.6 0 0 1 18.4 20 16.4 16.4 0 0 1 4 5.6 2.6 2.6 0 0 1 6.6 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        07751 095752
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== Header ===== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#top" class="brand" aria-label="Louis Whittaker Tree Services, home">
+        <img src="assets/logo-small.webp" alt="Louis Whittaker Tree Services logo" class="brand__mark" width="97" height="120" />
+        <span class="brand__text">
+          <span class="brand__name">Louis Whittaker</span>
+          <span class="brand__tag">Tree Services LTD</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#work">Our Work</a>
+        <a href="#locations">Locations</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" class="btn btn--primary nav__cta">Get a Free Quote</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <canvas class="hero__leaves" id="heroLeaves" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none"></canvas>
+      <div class="container hero__inner">
+        <div class="hero__copy reveal">
+          <p class="kicker">
+            <span class="kicker__stars" aria-hidden="true">★★★★★</span>
+            5.0 rated on Google<span class="sep" aria-hidden="true"></span>Tree surgery, south of England
+          </p>
+          <h1>Expert care for the trees <em>you love,</em> and the ones you don't.</h1>
+          <p class="hero__lead">
+            From delicate crown reductions to full removals and emergency storm work, our certified
+            arborists deliver excellence in every cut. Trusted across Hampshire, with three local
+            branches and a reputation built on tidy, professional work.
+          </p>
+          <div class="hero__cta">
+            <a href="#contact" class="btn btn--primary btn--lg magnetic">Get Your Free Quote</a>
+            <a href="tel:07751095752" class="btn btn--ghost btn--lg magnetic">
+              <svg viewBox="0 0 24 24" class="ic"><path d="M6.6 3h3l1.5 4.2-2 1.5a13.5 13.5 0 0 0 6.2 6.2l1.5-2L21 14.4v3A2.6 2.6 0 0 1 18.4 20 16.4 16.4 0 0 1 4 5.6 2.6 2.6 0 0 1 6.6 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              Call Louis directly
+            </a>
+          </div>
+          <ul class="hero__trust">
+            <li>
+              <svg viewBox="0 0 24 24" class="ic"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L15.6 9.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Fully insured
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="9" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 13.5L7 21l5-2.6L17 21l-1.5-7.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              Certified arborists
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" class="ic"><path d="M12 21s-7-5.7-7-11a7 7 0 1 1 14 0c0 5.3-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
+              3 branches across Hampshire
+            </li>
+          </ul>
+        </div>
+
+        <div class="hero__media reveal reveal--delay">
+          <figure class="hero__photo">
+            <img src="assets/photo-hero.webp"
+                 alt="A magnificent mature oak tree in a beautifully maintained English country garden at golden hour"
+                 width="1120" height="836" fetchpriority="high"
+                 onerror="this.closest('.hero__photo').classList.add('img-fallback'); this.remove();" />
+          </figure>
+          <div class="hero__badge hero__badge--rating">
+            <span class="hero__badge-stars">★★★★★</span>
+            <span><strong>5.0</strong> on Google<br /><small>Loved by local homeowners</small></span>
+          </div>
+          <div class="hero__badge hero__badge--branches">
+            <svg viewBox="0 0 24 24" class="ic"><path d="M12 21s-7-5.7-7-11a7 7 0 1 1 14 0c0 5.3-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
+            <span><strong>3 branches</strong><br /><small>Southampton, Winchester, Portsmouth</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Credentials strip ===== -->
+    <section class="creds" aria-label="Credentials">
+      <div class="container creds__inner">
+        <div class="creds__item reveal">
+          <svg viewBox="0 0 24 24" class="ic"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L15.6 9.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div><strong>Fully Insured</strong><span>Public liability cover on every job</span></div>
+        </div>
+        <div class="creds__item reveal">
+          <svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="9" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 13.5L7 21l5-2.6L17 21l-1.5-7.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <div><strong>Qualified &amp; Certified</strong><span>Trained, experienced arborists</span></div>
+        </div>
+        <div class="creds__item reveal">
+          <svg viewBox="0 0 24 24" class="ic"><path d="M4 12a8 8 0 0 1 13.6-5.7L20 8.5M20 12a8 8 0 0 1-13.6 5.7L4 15.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M20 4v4.5h-4.5M4 20v-4.5h4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div><strong>100% Waste Recycled</strong><span>Green waste chipped &amp; reused</span></div>
+        </div>
+        <div class="creds__item reveal">
+          <svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <div><strong>Fast, Free Quotes</strong><span>Site visit &amp; fixed price, no obligation</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Services (scroll stack) ===== -->
+    <section class="section section--services" id="services">
+      <div class="section__blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="container">
+        <div class="section__head section__head--center reveal">
+          <p class="eyebrow">What we do</p>
+          <h2>Every aspect of tree surgery,<br />to the highest standard.</h2>
+          <p class="section__sub">
+            Whether it's a single overgrown hedge or a complex removal beside your home,
+            the same certified team and professional equipment arrives at every job.
+          </p>
+        </div>
+
+        <div class="stack" id="serviceStack">
+          <article class="glass stack__card" style="--i:0">
+            <span class="stack__num" aria-hidden="true">01</span>
+            <div class="service__icon">
+              <svg viewBox="0 0 24 24"><path d="M12 3v18M12 3l-5 6h10zM12 9l-6 7h12z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="stack__body">
+              <h3>Tree Felling &amp; Removal</h3>
+              <p>Safe, controlled removal of trees of any size, including sectional dismantling in tight or sensitive spaces close to buildings.</p>
+              <ul class="stack__points"><li>Sectional dismantling</li><li>Tight access specialists</li><li>Waste cleared same day</li></ul>
+            </div>
+          </article>
+
+          <article class="glass stack__card" style="--i:1">
+            <span class="stack__num" aria-hidden="true">02</span>
+            <div class="service__icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 15v6M8 21h8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M16.5 5.5l2-2M19.5 9.5h2.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <div class="stack__body">
+              <h3>Crown Reduction &amp; Pruning</h3>
+              <p>Sympathetic reshaping that lets in light and keeps trees healthy, balanced and beautiful for years to come.</p>
+              <ul class="stack__points"><li>Healthier regrowth</li><li>More light in your garden</li><li>Shaped to last</li></ul>
+            </div>
+          </article>
+
+          <article class="glass stack__card" style="--i:2">
+            <span class="stack__tag">Most requested</span>
+            <span class="stack__num" aria-hidden="true">03</span>
+            <div class="service__icon">
+              <svg viewBox="0 0 24 24"><path d="M4 20h16M6 20V9a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 12h12M6 16h12" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+            </div>
+            <div class="stack__body">
+              <h3>Hedge Trimming &amp; Reduction</h3>
+              <p>Crisp, precise hedge cutting and height reductions. It's the finish our customers rave about in their reviews.</p>
+              <ul class="stack__points"><li>Crisp straight lines</li><li>Height reductions</li><li>Annual care plans</li></ul>
+            </div>
+          </article>
+
+          <article class="glass stack__card" style="--i:3">
+            <span class="stack__num" aria-hidden="true">04</span>
+            <div class="service__icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="13" r="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.5v4M5.5 6l2.5 2.5M18.5 6L16 8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <div class="stack__body">
+              <h3>Stump Grinding</h3>
+              <p>Complete stump removal below ground level, leaving the area ready for lawn, planting or paving.</p>
+              <ul class="stack__points"><li>Ground below surface level</li><li>Ready to replant</li><li>No mess left behind</li></ul>
+            </div>
+          </article>
+
+          <article class="glass stack__card" style="--i:4">
+            <span class="stack__tag stack__tag--amber">24/7 response</span>
+            <span class="stack__num" aria-hidden="true">05</span>
+            <div class="service__icon">
+              <svg viewBox="0 0 24 24"><path d="M13 2L5 13h6l-1 9 9-12h-6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="stack__body">
+              <h3>Emergency &amp; Storm Damage</h3>
+              <p>Fallen or dangerous trees made safe quickly. We work with your insurer and clear everything away.</p>
+              <ul class="stack__points"><li>24/7 call out</li><li>Insurance friendly</li><li>Made safe fast</li></ul>
+            </div>
+          </article>
+
+          <article class="glass stack__card" style="--i:5">
+            <span class="stack__num" aria-hidden="true">06</span>
+            <div class="service__icon">
+              <svg viewBox="0 0 24 24"><path d="M3 21l6-6M9 21H3v-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4a6 6 0 0 1 6 6c0 4-3 7-7 7 0-4 0-9 1-13z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="stack__body">
+              <h3>Site &amp; Garden Clearance</h3>
+              <p>Overgrown plots tamed, green waste chipped and removed. Your space handed back tidy and usable.</p>
+              <ul class="stack__points"><li>Overgrown plots</li><li>Green waste recycled</li><li>Ready to use space</li></ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Our work ===== -->
+    <section class="section section--alt" id="work">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="eyebrow">Our work</p>
+          <h2>The proof is in the finish.</h2>
+          <p class="section__sub">
+            Every job ends the same way: clean lines, healthy growth and a spotless site.
+            <em>Demo note: final imagery will feature Louis Whittaker's own before &amp; after photography.</em>
+          </p>
+        </div>
+
+        <div class="gallery" id="gallery">
+          <figure class="gallery__item gallery__item--wide reveal reveal--zoom" style="--d:.0s">
+            <img src="assets/work-woodland.webp"
+                 alt="Sunlight breaking through a well-managed woodland canopy" loading="lazy" data-parallax width="1200" height="670"
+                 onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
+            <figcaption><span>Woodland management near the New Forest</span></figcaption>
+          </figure>
+          <figure class="gallery__item reveal reveal--zoom" style="--d:.12s">
+            <img src="assets/work-arborist.webp"
+                 alt="A certified arborist roped and harnessed high in a tree, carefully pruning" loading="lazy" data-parallax width="860" height="642"
+                 onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
+            <figcaption><span>Crown thinning in Netley</span></figcaption>
+          </figure>
+          <figure class="gallery__item reveal reveal--zoom" style="--d:.08s">
+            <img src="assets/work-avenue.webp"
+                 alt="A tidy tree-lined country avenue after maintenance" loading="lazy" data-parallax width="860" height="642"
+                 onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
+            <figcaption><span>Avenue reduction in Winchester</span></figcaption>
+          </figure>
+          <figure class="gallery__item gallery__item--wide reveal reveal--zoom" style="--d:.16s">
+            <img src="assets/work-garden.webp"
+                 alt="Immaculate maintained grounds with a healthy mature tree and tidy hedges" loading="lazy" data-parallax width="1200" height="675"
+                 onerror="this.closest('.gallery__item').classList.add('img-fallback'); this.remove();" />
+            <figcaption><span>Full garden clearance in Portsmouth</span></figcaption>
+          </figure>
+        </div>
+
+        <p class="gallery__more reveal">
+          See more recent jobs on Instagram at
+          <a href="https://www.instagram.com/louiswhittakertreeservices" target="_blank" rel="noopener">@louiswhittakertreeservices</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Stats band ===== -->
+    <section class="stats" aria-label="Company statistics">
+      <div class="container stats__inner">
+        <div class="stat reveal">
+          <span class="stat__num" data-count="500" data-suffix="+">0</span>
+          <span class="stat__label">Trees &amp; hedges cared for</span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat__num" data-count="3">0</span>
+          <span class="stat__label">Branches across Hampshire</span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat__num" data-count="5" data-suffix=".0★">0</span>
+          <span class="stat__label">Google rating</span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat__num" data-count="100" data-suffix="%">0</span>
+          <span class="stat__label">Green waste recycled</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Locations ===== -->
+    <section class="section section--locations" id="locations">
+      <div class="section__blobs" aria-hidden="true"><i></i><i></i></div>
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="eyebrow">Where we work</p>
+          <h2>Three branches. One standard of excellence.</h2>
+          <p class="section__sub">
+            What started in Netley has grown into three local teams covering the south coast,
+            so wherever you are in Hampshire an expert arborist is never far away.
+          </p>
+        </div>
+
+        <div class="locations__wrap">
+          <!-- Living vine that grows zig-zag behind the branch cards as you scroll -->
+          <svg class="roots roots--v" viewBox="0 0 300 1080" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <defs>
+              <linearGradient id="vineV" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#6fb886" />
+                <stop offset="0.55" stop-color="#3c8254" />
+                <stop offset="1" stop-color="#22593a" />
+              </linearGradient>
+              <linearGradient id="leafV" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#7cc491" />
+                <stop offset="1" stop-color="#2f6b46" />
+              </linearGradient>
+            </defs>
+            <path class="vine" stroke="url(#vineV)" stroke-width="5.5" stroke-linecap="round"
+              d="M150 4 C196 52 196 98 188 144 C179 200 112 208 112 270 C112 334 190 344 188 406 C186 472 112 480 112 544 C112 608 190 618 188 680 C186 744 112 752 112 816 C112 880 190 890 176 1010" />
+            <g class="leaf" data-p="0.10" transform="translate(188 144)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.16" transform="translate(150 96) rotate(150)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C7 -11 22 -12 33 -2 C22 8 7 7 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.1" stroke-opacity=".5" d="M2 0 L29 -3"/></g></g>
+            <g class="leaf" data-p="0.24" transform="translate(112 270) rotate(186)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.30" transform="translate(150 312) rotate(28)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C7 -11 22 -12 33 -2 C22 8 7 7 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.1" stroke-opacity=".5" d="M2 0 L29 -3"/></g></g>
+            <g class="leaf" data-p="0.37" transform="translate(188 406) rotate(-12)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.50" transform="translate(112 544) rotate(192)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.56" transform="translate(150 586) rotate(20)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C7 -11 22 -12 33 -2 C22 8 7 7 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.1" stroke-opacity=".5" d="M2 0 L29 -3"/></g></g>
+            <g class="leaf" data-p="0.63" transform="translate(188 680) rotate(-18)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.76" transform="translate(112 816) rotate(200)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.85" transform="translate(184 904) rotate(-8)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C8 -13 26 -14 40 -2 C26 9 8 8 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.2" stroke-opacity=".5" d="M2 0 L35 -3"/></g></g>
+            <!-- larger leaves on the visible gap-crossing diagonals -->
+            <g class="leaf" data-p="0.06" transform="translate(190 74) rotate(-32)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C14 -22 48 -25 70 -4 C48 17 14 15 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.5" stroke-opacity=".5" d="M2 0 L62 -5"/></g></g>
+            <g class="leaf" data-p="0.17" transform="translate(147 205) rotate(206)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C14 -22 48 -25 70 -4 C48 17 14 15 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.5" stroke-opacity=".5" d="M2 0 L62 -5"/></g></g>
+            <g class="leaf" data-p="0.30" transform="translate(151 339) rotate(32)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C14 -22 48 -25 70 -4 C48 17 14 15 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.5" stroke-opacity=".5" d="M2 0 L62 -5"/></g></g>
+            <g class="leaf" data-p="0.255" transform="translate(116 298) rotate(150)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C11 -17 37 -19 54 -3 C37 13 11 12 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L48 -4"/></g></g>
+            <g class="leaf" data-p="0.44" transform="translate(151 475) rotate(206)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C14 -22 48 -25 70 -4 C48 17 14 15 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.5" stroke-opacity=".5" d="M2 0 L62 -5"/></g></g>
+            <g class="leaf" data-p="0.64" transform="translate(176 718) rotate(-26)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C14 -22 48 -25 70 -4 C48 17 14 15 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.5" stroke-opacity=".5" d="M2 0 L62 -5"/></g></g>
+            <g class="leaf" data-p="0.72" transform="translate(134 764) rotate(162)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C11 -17 37 -19 54 -3 C37 13 11 12 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L48 -4"/></g></g>
+            <g class="leaf" data-p="0.78" transform="translate(150 748) rotate(34)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C12 -19 40 -21 60 -3 C40 14 12 13 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.4" stroke-opacity=".5" d="M2 0 L52 -4"/></g></g>
+          </svg>
+
+          <!-- Horizontal vine for the side-by-side desktop layout -->
+          <svg class="roots roots--h" viewBox="0 0 1120 360" fill="none" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="vineH" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#6fb886" />
+                <stop offset="0.55" stop-color="#3c8254" />
+                <stop offset="1" stop-color="#22593a" />
+              </linearGradient>
+            </defs>
+            <path class="vine" stroke="url(#vineH)" stroke-width="5" stroke-linecap="round"
+              d="M-12 206 C90 150 150 150 234 162 C330 176 366 252 468 252 C558 252 600 152 700 152 C800 152 840 252 944 252 C1024 252 1074 184 1132 150" />
+            <g class="leaf" data-p="0.16" transform="translate(234 162) rotate(-68)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.42" transform="translate(468 252) rotate(108)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.60" transform="translate(700 152) rotate(-68)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.78" transform="translate(944 252) rotate(108)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C10 -16 34 -18 50 -3 C34 12 10 11 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.3" stroke-opacity=".5" d="M2 0 L44 -4"/></g></g>
+            <g class="leaf" data-p="0.30" transform="translate(360 200) rotate(40)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C7 -11 22 -12 33 -2 C22 8 7 7 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.1" stroke-opacity=".5" d="M2 0 L29 -3"/></g></g>
+            <g class="leaf" data-p="0.70" transform="translate(830 200) rotate(40)"><g class="leaf__s"><path fill="url(#leafV)" d="M0 0 C7 -11 22 -12 33 -2 C22 8 7 7 0 0 Z"/><path stroke="#1f4f33" stroke-width="1.1" stroke-opacity=".5" d="M2 0 L29 -3"/></g></g>
+          </svg>
+          <div class="locations__grid">
+          <article class="location glass tilt location--hq reveal">
+            <span class="location__flag">Head Office</span>
+            <div class="location__pin" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 21s-7-5.7-7-11a7 7 0 1 1 14 0c0 5.3-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
+            </div>
+            <h3>Southampton</h3>
+            <p class="location__addr">21 Gauntlet Drive, Netley,<br />Southampton SO31 5JH</p>
+            <p class="location__areas">Covering Netley, Hamble, Bursledon, Woolston and Southampton city</p>
+            <div class="location__actions">
+              <a href="tel:07751095752" class="location__link">07751 095752</a>
+              <a href="https://maps.app.goo.gl/NM9KCJrPzhyFc5sM8" target="_blank" rel="noopener" class="location__link location__link--muted">Get directions →</a>
+            </div>
+          </article>
+
+          <article class="location glass tilt reveal">
+            <div class="location__pin" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 21s-7-5.7-7-11a7 7 0 1 1 14 0c0 5.3-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
+            </div>
+            <h3>Winchester</h3>
+            <p class="location__addr">Winchester branch<br />&nbsp;</p>
+            <p class="location__areas">Covering Winchester, Eastleigh, Romsey and Chandler's Ford</p>
+            <div class="location__actions">
+              <a href="tel:07751095752" class="location__link">07751 095752</a>
+              <a href="#contact" class="location__link location__link--muted">Book a visit →</a>
+            </div>
+          </article>
+
+          <article class="location glass tilt reveal">
+            <div class="location__pin" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 21s-7-5.7-7-11a7 7 0 1 1 14 0c0 5.3-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
+            </div>
+            <h3>Portsmouth</h3>
+            <p class="location__addr">Portsmouth branch<br />&nbsp;</p>
+            <p class="location__areas">Covering Portsmouth, Fareham, Gosport and Havant</p>
+            <div class="location__actions">
+              <a href="tel:07751095752" class="location__link">07751 095752</a>
+              <a href="#contact" class="location__link location__link--muted">Book a visit →</a>
+            </div>
+          </article>
+          </div>
+        </div>
+
+        <p class="locations__note reveal">
+          Same certified teams, same professional kit and the same tidy finish, whichever branch looks after you.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Process ===== -->
+    <section class="section section--alt" id="process">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="eyebrow">How it works</p>
+          <h2>From first call to final sweep up.</h2>
+        </div>
+
+        <ol class="process" id="processTimeline">
+          <li class="process__step reveal">
+            <span class="process__num">1</span>
+            <h3>Tell us about the job</h3>
+            <p>Call, message or use the form below. Photos help, but aren't essential.</p>
+          </li>
+          <li class="process__step reveal">
+            <span class="process__num">2</span>
+            <h3>Free site visit &amp; fixed quote</h3>
+            <p>Louis visits, talks through options and gives you a clear written price. No surprises.</p>
+          </li>
+          <li class="process__step reveal">
+            <span class="process__num">3</span>
+            <h3>The work, done properly</h3>
+            <p>Our insured, certified team arrives on time and works safely and efficiently.</p>
+          </li>
+          <li class="process__step reveal">
+            <span class="process__num">4</span>
+            <h3>Spotless handover</h3>
+            <p>All waste chipped, removed and recycled. We leave your garden cleaner than we found it.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== Reviews slider ===== -->
+    <section class="section section--reviews" id="reviews">
+      <div class="section__blobs" aria-hidden="true"><i></i><i></i></div>
+      <div class="container">
+        <div class="section__head section__head--split reveal">
+          <div>
+            <p class="eyebrow">Reviews</p>
+            <h2>Don't take our word for it.</h2>
+            <p class="section__sub">Real feedback from gardens across all three branches.</p>
+          </div>
+          <div class="reviews__score glass">
+            <span class="reviews__score-g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+            <span class="reviews__score-num">5.0</span>
+            <span class="reviews__score-stars" aria-hidden="true">★★★★★</span>
+            <span class="reviews__score-count">131 reviews total</span>
+            <a href="https://maps.app.goo.gl/NM9KCJrPzhyFc5sM8" target="_blank" rel="noopener">See us on Google</a>
+          </div>
+        </div>
+
+        <div class="slider reveal" id="reviewSlider">
+          <div class="slider__track" id="reviewTrack" tabindex="0" aria-label="Customer reviews, swipe or use arrow buttons to browse">
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"Louis was superb. The work was very professional, completed quickly, and the team were prompt, friendly and hardworking throughout."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>M</span>';" />
+                <div><strong>Margaret H.</strong><span>Netley</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"They reduced our big oak beautifully. You honestly cannot tell it has been cut, it just looks tidy, healthy and full of light."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>J</span>';" />
+                <div><strong>James T.</strong><span>Winchester</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"Hedge height reduction and trimming. Absolutely delighted with the quote, the professionalism and the quality of the work."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/men/52.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>D</span>';" />
+                <div><strong>David B.</strong><span>Hamble</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"Two large conifers removed in a morning. Fair price, polite team and the lawn was spotless when they left."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>S</span>';" />
+                <div><strong>Sarah P.</strong><span>Fareham</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"The old stump in our front garden was ground out in under an hour. You would never know a tree had ever been there."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/women/21.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>E</span>';" />
+                <div><strong>Emma R.</strong><span>Eastleigh</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"A branch came down on our fence in a storm and Louis was out the same day. Made everything safe and sorted the lot."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/men/76.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>P</span>';" />
+                <div><strong>Peter W.</strong><span>Portsmouth</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"Our apple trees were pruned with real care. Louis explained everything and clearly loves what he does."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>L</span>';" />
+                <div><strong>Lucy M.</strong><span>Romsey</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"They cleared a garden we had let go for years. It came back looking twice the size. Brilliant value."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>A</span>';" />
+                <div><strong>Alan G.</strong><span>Gosport</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"Beech hedge cut perfectly level. Tidy, efficient and very reasonable. We have already booked them for next year."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/women/33.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>R</span>';" />
+                <div><strong>Rachel S.</strong><span>Chandler's Ford</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+            <blockquote class="review glass tilt">
+              <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>"Three trees taken down close to the house with no drama at all. Professional from the first call to the final sweep up."</p>
+              <footer>
+                <img class="review__photo" src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy"
+                     onerror="this.outerHTML='<span class=&quot;review__avatar&quot;>T</span>';" />
+                <div><strong>Tom K.</strong><span>Southampton</span></div>
+                <span class="review__g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></span>
+              </footer>
+            </blockquote>
+
+          </div>
+
+          <div class="slider__controls">
+            <button class="slider__btn" id="revPrev" aria-label="Previous reviews">
+              <svg viewBox="0 0 24 24" class="ic"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="slider__dots" id="revDots" role="tablist" aria-label="Review pages"></div>
+            <button class="slider__btn" id="revNext" aria-label="Next reviews">
+              <svg viewBox="0 0 24 24" class="ic"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <p class="slider__hint">Swipe to read more reviews</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA band ===== -->
+    <section class="cta">
+      <div class="container cta__inner reveal">
+        <div>
+          <h2>Ready to transform your garden?</h2>
+          <p>Free, no obligation quotes from your nearest branch, usually within 48 hours.</p>
+        </div>
+        <div class="cta__actions">
+          <a href="#contact" class="btn btn--light btn--lg">Get a Free Quote</a>
+          <a href="tel:07751095752" class="btn btn--ghost-light btn--lg">07751 095752</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section class="section section--contact" id="contact">
+      <div class="section__blobs" aria-hidden="true"><i></i><i></i></div>
+      <div class="container contact__grid">
+        <div class="contact__info reveal">
+          <p class="eyebrow">Get in touch</p>
+          <h2>Tell us about your trees.</h2>
+          <p class="section__sub">
+            Send a few details and your nearest branch will be in touch to arrange a free site visit.
+            Prefer to talk? Louis answers the phone himself.
+          </p>
+
+          <ul class="contact__list">
+            <li>
+              <svg viewBox="0 0 24 24" class="ic"><path d="M6.6 3h3l1.5 4.2-2 1.5a13.5 13.5 0 0 0 6.2 6.2l1.5-2L21 14.4v3A2.6 2.6 0 0 1 18.4 20 16.4 16.4 0 0 1 4 5.6 2.6 2.6 0 0 1 6.6 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+              <a href="tel:07751095752">07751 095752</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" class="ic"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <a href="mailto:louis@whittakertreeservices.co.uk">louis@whittakertreeservices.co.uk</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" class="ic"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg>
+              <a href="https://www.instagram.com/louiswhittakertreeservices" target="_blank" rel="noopener">@louiswhittakertreeservices</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" class="ic"><path d="M12 21s-7-5.7-7-11a7 7 0 1 1 14 0c0 5.3-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
+              <span>Southampton, Winchester and Portsmouth</span>
+            </li>
+          </ul>
+        </div>
+
+        <form class="contact__form glass reveal reveal--delay" id="quoteForm" novalidate>
+          <h3>Request your free quote</h3>
+          <div class="form__row">
+            <label>
+              <span>Your name</span>
+              <input type="text" name="name" placeholder="Jane Smith" required autocomplete="name" />
+            </label>
+            <label>
+              <span>Phone or email</span>
+              <input type="text" name="contact" placeholder="07700 900123" required autocomplete="tel" />
+            </label>
+          </div>
+          <label>
+            <span>Nearest branch</span>
+            <select name="branch">
+              <option>Southampton (Netley), Head Office</option>
+              <option>Winchester</option>
+              <option>Portsmouth</option>
+              <option>Not sure, choose for me</option>
+            </select>
+          </label>
+          <label>
+            <span>What do you need?</span>
+            <textarea name="message" rows="4" placeholder="e.g. A conifer hedge reduced to around 6ft, plus an old apple tree removed…"></textarea>
+          </label>
+          <button type="submit" class="btn btn--primary btn--lg btn--block">Send my request</button>
+          <p class="form__note">No spam, no pressure. Just a friendly call back to arrange your free visit.</p>
+          <div class="form__success" id="formSuccess" role="status" hidden>
+            <svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <strong>Thank you!</strong> Your request has been received. We'll be in touch shortly to arrange your free quote.
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <canvas class="footer__leaves" id="footerLeaves" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none"></canvas>
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/logo-small.webp" alt="Louis Whittaker Tree Services logo" class="footer__logo" width="97" height="120" />
+        <p>Providing excellence in arboriculture<br />in the south of England.</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="#services">Services</a>
+        <a href="#work">Our Work</a>
+        <a href="#locations">Locations</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="footer__branches">
+        <strong>Our branches</strong>
+        <span>Southampton (HQ), Netley SO31 5JH</span>
+        <span>Winchester</span>
+        <span>Portsmouth</span>
+      </div>
+    </div>
+    <div class="container footer__legal">
+      <span>© <span id="year">2026</span> Louis Whittaker Tree Services LTD. All rights reserved.</span>
+      <span>Fully insured. Certified arborists. Free quotes.</span>
+    </div>
+  </footer>
+
+  <!-- Sticky mobile call bar -->
+  <div class="callbar">
+    <a href="tel:07751095752" class="btn btn--ghost">Call now</a>
+    <a href="#contact" class="btn btn--primary">Free quote</a>
+  </div>
+
+  <script src="js/main.js?v=8"></script>
+</body>
+</html>
